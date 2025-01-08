@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- * 서버 부팅 시 파트너 계정을 생성해주는 로더 컴포넌트
+ * 서버 부팅 시 파트너 계정을 생성해주는 데이터로더 컴포넌트
  */
 @Component
 @Log4j2
