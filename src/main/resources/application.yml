@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: handmade-mall
+  mvc:
+    hiddenmethod:
+      filter:
+        enable: true # form에서 put, patch, delete 등을 사용할 수 있게 만들어줍니다
+
+  # H2 Setting Info (H2 Console에 접속하기 위한 설정정보 입력)
+  h2:
+    console:
+      enabled: true  # H2 Console을 사용할지 여부 (H2 Console은 H2 Database를 UI로 제공해주는 기능)
+      path: /h2-console  # H2 Console의 Path
+
+  # Database Setting Info
+  datasource:
+    # H2 설정    
+     driver-class-name: org.h2.Driver  # Database를 H2로 사용하겠다.
+     url: jdbc:h2:mem:testdb  # H2 접속 정보, 인메모리
+     username: sa  # H2 접속 시 입력할 username 정보 (원하는 것으로 입력)
+     password:  # H2 접속 시 입력할 password 정보 (원하는 것으로 입력)
+    # MySQL 설정
+#    driver-class-name: com.mysql.cj.jdbc.Driver # Mysql 드라이버
+#    url: jdbc:mysql://127.0.0.1:3306/simpmall # Mysql DB 주소
+#    username: root # DB 계정 이름
+#    password: admin # DB 계정 패스워드
+
+  jpa:
+    hibernate:
+      ddl-auto: create #create, update, validate, none
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect # H2 방언
+#    database-platform: org.hibernate.dialect.MySQLDialect # MYSQL 방언
+
+  # Thymeleaf Setting
+  thymeleaf:
+    cache: false # false: 재시작 없이 새로고침으로 웹페이지 변경사항 반영
+    prefix: file:src/main/resources/templates/ # 프리픽스를 설정해야 위의 cache 설정도 반영됨
+
+  # Servlet Setting
+  servlet:
+    multipart:
+      maxFileSize: 50MB # 최대 파일 크기
+      maxRequestSize: 500MB # 최대 전송 요청 크기
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie # Get요청에 session 안 붙게 설정
+  port: 8080 # 서버 포트 설정
+
+config:
+  product-image-location: C:/product-images/ #파일 저장 경로
+  product-image-resource-handler: /product-images/ # 상품 이미지 핸들러
