@@ -1,19 +1,19 @@
 package newbies.handmade_mall.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 /**
  * 파트너 엔티티
  */
 @Entity
-@Data
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "partner")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Partner extends BaseTime {
 
     @Id
@@ -24,9 +24,11 @@ public class Partner extends BaseTime {
 
     @Column(name = "account_id", nullable = false, unique = true)
     @Comment("파트너 계정의 아이디")
+    @NonNull // Null 값 허용 안함
     private String accountId;
 
     @Column(name = "account_password", nullable = false)
     @Comment("파트너 계정의 패스워드")
+    @NonNull // Null 값 허용 안함
     private String accountPassword;
 }
