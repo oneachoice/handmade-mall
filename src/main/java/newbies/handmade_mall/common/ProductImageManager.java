@@ -35,7 +35,7 @@ public class ProductImageManager {
 
             String originalFilename = imageFile.getOriginalFilename();
             
-            if(originalFilename == null) throw new RuntimeException("이미지 파일의 이름이 존재하지 않음");
+            if(originalFilename == null || originalFilename.isBlank()) throw new RuntimeException("이미지 파일의 이름이 존재하지 않음");
 
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
             
@@ -52,11 +52,25 @@ public class ProductImageManager {
         }
     }
 
+
     /**
      * @param imageFileName 확장자를 포함한 이미지 파일의 이름
      * @return 이미지 파일의 URL
      */
     public String createImageUrl(String imageFileName) {
         return resourceHandler + imageFileName;
+    }
+
+
+    /**
+     * @param imageFile 이미지 파일
+     * @return 이미지 파일의 확장자
+     */
+    public String getExtensionOf(MultipartFile imageFile) {
+        String originalFilename = imageFile.getOriginalFilename();
+
+        if(originalFilename == null || originalFilename.isBlank()) throw new RuntimeException("유효하지 않은 이미지 파일명");
+
+        return originalFilename.substring(originalFilename.lastIndexOf("."));
     }
 }
