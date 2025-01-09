@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>파트너 홈</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+    <!--루트 컨테이너-->
+    <div>
+        <!-- 레이아웃 컨테이너 -->
+        <div class="row min-vh-100 g-0">
+            <!-- 네비게이션 컨테이너 -->
+            <div class="col-3 col-sm-2 border-end shadow bg-dark-subtle text-dark-emphasis">
+                <nav th:replace="~{/fragments/partner-navigation :: partner-navigation}">파트너 네비게이션</nav>
+            </div>
+            <!-- /네이게이션 컨테이너 -->
+
+            <!-- 메인 컨테이너 -->
+            <main class="col-9 col-sm-10">
+
+            </main>
+            <!-- /메인 컨테이너 -->
+
+        </div>
+        <!-- /레이아웃 컨테이너 -->
+
+
+    </div>
+    <!--/루트 컨테이너-->
+    <!-- JS -->
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <!-- /JS -->
+</body>
+<!-- 바디 -->
+
+</html>
