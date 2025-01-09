@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>파트너 페이지 네비게이션</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+<body>
+    <!-- 파트너 네비게이션 -->
+    <nav th:fragment="partner-navigation" class="p-5 nav nav-underline">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">홈</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">상품 관리</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">주문 관리</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /파트너 네비게이션 -->
+</body>
+</html>
