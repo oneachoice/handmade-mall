@@ -21,7 +21,7 @@ public class ProductImageManager {
     private String location;
 
     // 이미지 리소스 핸들러 경로
-    @Value("{config.product-image-resource-handler}")
+    @Value("${config.product-image-resource-handler}")
     private String resourceHandler;
 
     /**
