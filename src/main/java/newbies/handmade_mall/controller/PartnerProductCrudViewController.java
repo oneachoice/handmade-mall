@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/partner")
-public class PartnerCrudViewController {
+public class PartnerProductCrudViewController {
 
     private final ProductCrudService productCrudService;
 
