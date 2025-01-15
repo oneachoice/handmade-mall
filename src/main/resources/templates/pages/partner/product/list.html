@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+  <!-- 메타데이터 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!-- 메타데이터 -->
+
+  <!-- 제목 -->
+  <title>파트너 상품 리스트</title>
+  <!-- /제목 -->
+
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+  <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+  <!--루트 컨테이너-->
+  <div>
+    <!-- 레이아웃 컨테이너 -->
+    <div class="row min-vh-100 g-0">
+      <!-- 네비게이션 컨테이너 -->
+      <div class="col-3 col-sm-2 border-end shadow bg-dark-subtle text-dark-emphasis">
+        <nav th:replace="~{/fragments/partner-navigation :: partner-navigation}">
+          파트너 네비게이션
+        </nav>
+      </div>
+      <!-- /네이게이션 컨테이너 -->
+
+      <!-- 메인 컨테이너 -->
+      <main class="col-9 col-sm-10">
+        <!-- 상품 리트스 테이블 컨테이너-->
+        <div class="container p-5">
+          <h3>등록된 상품 리스트</h3>
+          <br />
+          <!-- 단위 금액 관련-->
+          <div class="container">
+            <div class="row justify-content-end">
+              <div class="col-auto fw-light">단위 금액 : 원</div>
+            </div>
+          </div>
+          <!-- /단위 금액 관련-->
+          <table class="table table-bordered table-hover text-center">
+            <thead>
+              <tr>
+                <th scope="col">상품 코드</th>
+                <th scope="col">이미지</th>
+                <th scope="col">카테고리</th>
+                <th scope="col">상품명</th>
+                <th scope="col">판매가</th>
+                <th scope="col">할인가</th>
+                <th scope="col">할인율</th>
+                <th scope="col">재고</th>
+                <th scope="col">마진가</th>
+                <th scope="col">마진율</th>
+                <th scope="col">등록일자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="productlist : ${paging.content}">
+                <th scope="row" th:text="${productlist.productCode}"></th>
+                <td>
+                  <a href="@{/${productlist.mainImagePath}}">
+                    <img th:src="${productlist.mainImagePath}" width="100px" height="100px" alt="Product Image" />
+                  </a>
+                </td>
+                <td th:text="${productlist.category}"></td>
+
+                <!-- <a th:href="@{/partner/product/update/${product.productId}}" class="link-offset-2 link-underline link-underline-opacity-0"></a> -->
+                <td>
+                  <a href="@{/partner/product/update/{productId} (productId=${productlist.productId})}">
+                    <span th:text="${productlist.productName}"></span>
+                  </a>
+                </td>
+                <td th:text="${productlist.sellingPrice}"></td>
+                <td th:text="${productlist.discountPrice}"></td>
+                <td th:text="${productlist.discountRate}"></td>
+                <td th:text="${productlist.count}"></td>
+                <td th:text="${productlist.margin}"></td>
+                <td th:text="${productlist.marginRate}"></td>
+                <td th:text="${productlist.createdAt}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- /상품 리스트 테이블 컨테이너-->
+
+        <!-- 페이지네이션 -->
+        <nav aria-label="Page navigation ">
+          <ul class="pagination justify-content-center pagination-sm">
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
+              <a class="page-link" th:href="@{/partner/product/list(page=${currentPage - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <!-- /이전 버튼 -->
+            <!-- 페이지 번호 -->
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, paging.totalPages - 1)}"
+              th:classappend="${pageNum == currentPage} ? 'active' : ''">
+              <a class="page-link" th:href="@{/partner/product/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
+            </li>
+            <!-- /페이지 번호 -->
+            <!-- 다음 버튼 -->
+            <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
+              <a class="page-link" th:href="@{/partner/product/list(page=${currentPage + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            <!-- /다음 버튼 -->
+          </ul>
+        </nav>
+        <!-- /페이지네이션 -->
+
+      </main>
+      <!-- /메인 컨테이너 -->
+    </div>
+    <!-- /레이아웃 컨테이너 -->
+  </div>
+  <!--/루트 컨테이너-->
+
+  <!-- JS -->
+  <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+
+  <script></script>
+  <!-- /JS -->
+</body>
+<!-- 바디 -->
+
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>파트너 홈</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+    <!--루트 컨테이너-->
+    <div>
+        <!-- 레이아웃 컨테이너 -->
+        <div class="row min-vh-100 g-0">
+            <!-- 네비게이션 컨테이너 -->
+            <div class="col-3 col-sm-2 border-end shadow bg-dark-subtle text-dark-emphasis">
+                <nav th:replace="~{/fragments/partner-navigation :: partner-navigation}">파트너 네비게이션</nav>
+            </div>
+            <!-- /네이게이션 컨테이너 -->
+
+            <!-- 메인 컨테이너 -->
+            <main class="col-9 col-sm-10">
+
+                <h3>상품 삭제 모달</h3>
+                <!-- 모달 버튼과 모달 메세지 -->
+                <button type="button" class="btn btn-primary">수정</button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    삭제
+                </button>
+
+                <!-- Modal -->
+
+                 <form class="container" th:action="@{/partner/product/delete/{id}(id=${product.id})}" th:method="delete">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">상품 삭제!</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <span th:text="${product.productName} + '을 삭제하시겠습니까?'"></span>
+                                <p th:text="'id = ' + ${product.id}"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                <button type="submit" class="btn btn-danger">삭제</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+                <!-- /모달 버튼과 모달 메세지 -->
+
+            </main>
+            <!-- /메인 컨테이너 -->
+
+        </div>
+        <!-- /레이아웃 컨테이너 -->
+
+
+    </div>
+    <!--/루트 컨테이너-->
+    <!-- JS -->
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <!-- /JS -->
+</body>
+<!-- 바디 -->
+
+</html>

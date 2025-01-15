@@ -6,7 +6,7 @@ import newbies.handmade_mall.common.ProductCategory;
 import org.hibernate.annotations.Comment;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -86,6 +86,8 @@ public class Product extends BaseTime {
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductImage> productImageList;
 
     @Transient
     public String getProductCode() {

@@ -7,6 +7,9 @@ import org.hibernate.annotations.Comment;
 
 import java.util.UUID;
 
+/**
+ * 제품 이미지 엔티티
+ */
 @Entity
 @Table(name = "product_image")
 @Data
@@ -24,7 +27,7 @@ public class ProductImage extends BaseTime {
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     @Comment("상품 외래키")
     private Product product;

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>상품 수정</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+<!--루트 컨테이너-->
+<div>
+    <!-- 레이아웃 컨테이너 -->
+    <div class="row min-vh-100 g-0">
+        <!-- 네비게이션 컨테이너 -->
+        <div class="col-3 col-sm-2 border-end shadow bg-dark-subtle text-dark-emphasis">
+            <nav th:replace="~{/fragments/partner-navigation :: partner-navigation}">파트너 네비게이션</nav>
+        </div>
+        <!-- /네이게이션 컨테이너 -->
+
+        <!-- 메인 컨테이너 -->
+        <main class="col-9 col-sm-10">
+            <!-- 제목 컨테이너 -->
+            <div class="container p-5">
+                <!-- 제목 -->
+                <h1>상품 등록</h1>
+            </div>
+            <!-- /제목 컨테이너 -->
+            <!-- 폼 영역 가운데 정렬 -->
+            <div class="row justify-content-center">
+                <!-- 폼 영역 넓이 조절 -->
+                <div class="col-md-8">
+                    <!-- 상품 수정 폼 영역 -->
+                    <form th:action="@{/partner/product/update}" th:method="put" enctype="multipart/form-data" >
+                        <!-- hidden타입으로 제품아이디 넘겨줌-->
+                        <input type="hidden" name="productId" th:value="${productId}">
+                        <div class="container  p-1">
+
+                            <!-- 첫번째 라인 -->
+                            <div class="row">
+                                <div class="col">
+                                    <!-- 상품명 인풋 -->
+                                    <div class="mb-3">
+                                        <label for="productName" class="form-label">상품명</label>
+                                        <input type="text" class="form-control" id="productName" name="productName"
+                                               required th:value="${productName}">
+                                    </div>
+                                    <!-- /상품명 인풋 -->
+                                </div>
+                            </div>
+                            <!-- /첫번째 라인 -->
+
+                            <!-- 두번째 라인 -->
+                            <!-- my : 마진 -->
+                            <div class="row">
+                                <!-- 상품 카테고리 인풋 -->
+                                <div class="col-6">
+                                    <label for="category" class="form-label">상품 카테고리</label>
+                                    <select id="category" name="category" class="form-select"
+                                            aria-label="Default select example" required>
+                                        <option th:selected="${category}=='GENERAL'" value="GENERAL">일반</option>
+                                        <option th:selected="${category}=='GIFT'" value="GIFT">선물용</option>
+                                    </select>
+                                </div>
+                                <!-- /상품 카테고리 인풋 -->
+                            </div>
+                            <!-- 두번째 라인 -->
+
+                            <!-- 세번째 라인 -->
+                            <div class="row my-3">
+                                <!-- 판매가 인풋 -->
+                                <div class="col">
+                                    <label for="sellingPrice" class="form-label">판매가</label>
+                                    <input placeholder="0" type="number" class="form-control" id="sellingPrice"
+                                           name="sellingPrice" min="0" required th:value="${sellingPrice}">
+                                </div>
+                                <!-- /판매가 인풋 -->
+                                <!-- 원가 인풋 -->
+                                <div class="col">
+                                    <label for="costPrice" class="form-label">원가</label>
+                                    <input placeholder="0" class="form-control" id="costPrice" name="costPrice"
+                                           min="0" required th:value="${costPrice}" >
+                                </div>
+                                <!-- /원가 인풋 -->
+                            </div>
+                            <!-- 세번째 라인 -->
+
+                            <!-- 네번째 라인 -->
+                            <div class="row my-3">
+                                <!-- 할인가 인풋 -->
+                                <div class="col">
+                                    <label for="discountedPrice" class="form-label">할인가</label>
+                                    <input placeholder="0" type="number" class="form-control" id="discountedPrice"
+                                           name="discountedPrice" min="0" required th:value="${discountedPrice}">
+                                </div>
+                                <!-- /할인가 인풋 -->
+                                <!-- 할인율 인풋 -->
+                                <div class="col">
+                                    <label for="discountRate" class="form-label">할인율</label>
+                                    <input placeholder="0" class="form-control" id="discountRate"
+                                           name="discountRate" type="number" min="0" max="100" step="0.01" required th:value="${discountRate}">
+                                </div>
+                                <!-- /할인율 인풋 -->
+                            </div>
+                            <!-- 네번째 라인 -->
+
+                            <!-- 다섯번째 라인 -->
+                            <div class="row my-3">
+                                <!-- 마진 인풋 -->
+                                <div class="col">
+                                    <label for="margin" class="form-label">마진</label>
+                                    <input placeholder="0" class="form-control" id="margin" name="margin" readonly
+                                           required th:value="${margin}">
+                                </div>
+                                <!-- /마진 인풋 -->
+                                <!-- 마진율 인풋 -->
+                                <div class="col">
+                                    <label for="marginRate" class="form-label">마진율</label>
+                                    <input placeholder="0" type="number" class="form-control" id="marginRate"
+                                           name="marginRate" readonly required th:value="${marginRate}">
+                                </div>
+                                <!-- /마진율 인풋 -->
+                            </div>
+                            <!-- 다섯번째 라인 -->
+
+                            <!-- 여섯번째 라인 -->
+                            <div class="row my-3">
+                                <!-- 배송비 인풋 -->
+                                <div class="col">
+                                    <label for="shippingFee" class="form-label">배송비</label>
+                                    <input placeholder="0" type="number" class="form-control" id="shippingFee"
+                                           name="shippingFee" min="0" required th:value="${shippingFee}"/>
+                                </div>
+                                <!-- /배송비 인풋 -->
+                                <!-- 재고 수량 인풋 -->
+                                <div class="col">
+                                    <label for="count" class="form-label">재고 수량</label>
+                                    <input placeholder="0" type="number" class="form-control" id="count"
+                                           name="count" min="0" required th:value="${count}"/>
+                                </div>
+                                <!-- /재고수량 인풋 -->
+                            </div>
+                            <!-- 대표이미지 인풋 -->
+                            <div class="row my-1">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="mainProductImage" class="form-label">대표 이미지</label>
+                                        <input type="file" class="form-control" id="mainProductImage"
+                                               name="mainProductImage">
+                                        <!-- 이미지 미리보기 영역 -->
+                                        <p class="mt-2">현재 등록된 이미지 미리보기</p>
+                                        <img th:if="${mainImagePath != null}" th:src="@{${mainImagePath}}" style="width:100px; height:100px;">
+                                        <!-- /이미지 미리보기 영역 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /대표이미지 인풋 -->
+                            <!-- 카드이미지 인풋 -->
+                            <div class="row my-1">
+                                <div class="col">
+                                    <div class="mb-3" >
+                                        <label for="productCardImage" class="form-label">카드 이미지</label>
+                                        <input type="file" class="form-control mb-2" id="productCardImage"
+                                               name="productCardImages">
+                                        <input type="file" class="form-control mb-2"
+                                               name="productCardImages">
+                                        <input type="file" class="form-control mb-2"
+                                               name="productCardImages">
+                                        <!-- 이미지 미리보기 영역 -->
+                                        <p>현재 등록된 이미지 미리보기</p>
+                                        <div  class="d-flex justify-content-start">
+                                        <div th:each="card : ${cardImagePath}">
+                                        <img th:if="${cardImagePath != null}" th:src="@{${card}}" style="width:100px; height:100px;">
+                                        </div>
+                                        </div>
+                                        <!-- /이미지 미리보기 영역 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /카드이미지 인풋 -->
+
+                            <!-- 설명이미지 인풋 -->
+                            <div class="row my-1">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="productDescriptionImage" class="form-label">설명 이미지</label>
+                                        <input type="file" class="form-control mb-2" id="productDescriptionImage"
+                                               name="productDescriptionImages" >
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
+                                        <!-- 이미지 미리보기 영역 -->
+                                        <p>현재 등록된 이미지 미리보기</p>
+                                        <div  class="d-flex justify-content-start">
+                                            <div th:each="desc : ${descriptionImagePath}">
+                                                <img th:if="${descriptionImagePath !=null}" th:src="@{${desc}}" style="width:100px; height:100px;">
+                                            </div>
+                                        </div>
+                                        <!-- /이미지 미리보기 영역 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /설명이미지 인풋 -->
+                            <!-- 버튼 영역 -->
+                            <div class="d-flex justify-content-end g-sm-2">
+
+                                <!-- 등록 버튼 -->
+                                <div>
+                                    <button type="submit"
+                                            class="me-2 btn btn-secondary btn-lg text-nowrap">수정하기</button>
+                                </div>
+                                <!-- /등록 버튼 -->
+                                <div>
+                                    <!-- 목록 링크 -->
+                                    <a href="#">
+                                        <button type="button"
+                                                class="btn btn-secondary btn-lg text-nowrap">목록</button>
+                                    </a>
+                                    <!-- /목록 링크 -->
+                                </div>
+                            </div>
+                            <!-- /버튼 영역 -->
+                        </div>
+                    </form>
+                    <!-- /상품 등록 폼 영역 -->
+                </div>
+                <!-- /폼 영역 넓이 조절 -->
+            </div>
+            <!-- /폼 영역 가운데 정렬 -->
+        </main>
+        <!-- /메인 컨테이너 -->
+
+    </div>
+    <!-- /레이아웃 컨테이너 -->
+
+
+</div>
+<!--/루트 컨테이너-->
+<!-- JS -->
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+<!-- /JS -->
+
+<!-- Custom JS -->
+<script>
+
+    // 판매가
+    const sellingPriceInputEl = document.getElementById("sellingPrice");
+
+    // 원가
+    const costPriceInputEl = document.getElementById("costPrice");
+
+    // 할인가
+    const discountedPriceInputEl = document.getElementById("discountedPrice");
+
+    // 할인율
+    const discountRateInputEl = document.getElementById("discountRate");
+
+    // 마진
+    const marginInputEl = document.getElementById("margin");
+
+    // 마진율
+    const marginRateInputEl = document.getElementById("marginRate");
+
+    const formEl = document.getElementsByTagName("form")[0]
+
+    formEl.addEventListener("change", (event) => {
+
+
+        if (event.target === sellingPriceInputEl || event.target === discountRateInputEl) {
+            if (sellingPriceInputEl.value && discountRateInputEl.value) {
+                discountedPriceInputEl.value = (sellingPriceInputEl.value - sellingPriceInputEl.value * discountRateInputEl.value / 100).toFixed(2);
+            }
+        }
+
+        if (event.target === sellingPriceInputEl || event.target === discountedPriceInputEl) {
+            if (sellingPriceInputEl.value && discountedPriceInputEl.value) {
+                discountRateInputEl.value = ((sellingPriceInputEl.value - discountedPriceInputEl.value) / sellingPriceInputEl.value * 100).toFixed(2);
+            }
+        }
+
+        if (event.target === discountRateInputEl || event.target === sellingPriceInputEl || event.target === discountedPriceInputEl || event.target === costPriceInputEl) {
+            if (discountedPriceInputEl.value && costPriceInputEl.value) {
+                marginInputEl.value = discountedPriceInputEl.value - costPriceInputEl.value;
+            }
+        }
+
+        if (event.target === discountedPriceInputEl || event.target === costPriceInputEl) {
+            if (discountedPriceInputEl.value && costPriceInputEl.value) {
+                marginRateInputEl.value = ((discountedPriceInputEl.value - costPriceInputEl.value) / costPriceInputEl.value * 100).toFixed(2);
+            }
+        }
+    })
+
+</script>
+<!-- /Custom JS -->
+</body>
+<!-- 바디 -->
+
+</html>
