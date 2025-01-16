@@ -4,10 +4,10 @@
 
 <head>
     <!-- 메타데이터 -->
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <!-- 메타데이터 -->
 
     <!-- 제목 -->
@@ -15,7 +15,7 @@
     <!-- /제목 -->
 
     <!-- CSS -->
-    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}"/>
     <!-- /CSS -->
 </head>
 <!-- /헤드 -->
@@ -46,7 +46,7 @@
                 <!-- 폼 영역 넓이 조절 -->
                 <div class="col-md-8">
                     <!-- 상품 수정 폼 영역 -->
-                    <form th:action="@{/partner/product/update}" th:method="put" enctype="multipart/form-data" >
+                    <form th:action="@{/partner/product/update}" th:method="put" enctype="multipart/form-data">
                         <!-- hidden타입으로 제품아이디 넘겨줌-->
                         <input type="hidden" name="productId" th:value="${productId}">
                         <div class="container  p-1">
@@ -94,7 +94,7 @@
                                 <div class="col">
                                     <label for="costPrice" class="form-label">원가</label>
                                     <input placeholder="0" class="form-control" id="costPrice" name="costPrice"
-                                           min="0" required th:value="${costPrice}" >
+                                           min="0" required th:value="${costPrice}">
                                 </div>
                                 <!-- /원가 인풋 -->
                             </div>
@@ -113,7 +113,8 @@
                                 <div class="col">
                                     <label for="discountRate" class="form-label">할인율</label>
                                     <input placeholder="0" class="form-control" id="discountRate"
-                                           name="discountRate" type="number" min="0" max="100" step="0.01" required th:value="${discountRate}">
+                                           name="discountRate" type="number" min="0" max="100" step="0.01" required
+                                           th:value="${discountRate}">
                                 </div>
                                 <!-- /할인율 인풋 -->
                             </div>
@@ -164,7 +165,8 @@
                                                name="mainProductImage">
                                         <!-- 이미지 미리보기 영역 -->
                                         <p class="mt-2">현재 등록된 이미지 미리보기</p>
-                                        <img th:if="${mainImagePath != null}" th:src="@{${mainImagePath}}" style="width:100px; height:100px;">
+                                        <img th:if="${mainImagePath != null}" th:src="@{${mainImagePath}}"
+                                             style="width:100px; height:100px;">
                                         <!-- /이미지 미리보기 영역 -->
                                     </div>
                                 </div>
@@ -173,7 +175,7 @@
                             <!-- 카드이미지 인풋 -->
                             <div class="row my-1">
                                 <div class="col">
-                                    <div class="mb-3" >
+                                    <div class="mb-3">
                                         <label for="productCardImage" class="form-label">카드 이미지</label>
                                         <input type="file" class="form-control mb-2" id="productCardImage"
                                                name="productCardImages">
@@ -183,10 +185,11 @@
                                                name="productCardImages">
                                         <!-- 이미지 미리보기 영역 -->
                                         <p>현재 등록된 이미지 미리보기</p>
-                                        <div  class="d-flex justify-content-start">
-                                        <div th:each="card : ${cardImagePath}">
-                                        <img th:if="${cardImagePath != null}" th:src="@{${card}}" style="width:100px; height:100px;">
-                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <div th:each="card : ${cardImagePath}">
+                                                <img th:if="${cardImagePath != null}" th:src="@{${card}}"
+                                                     style="width:100px; height:100px;">
+                                            </div>
                                         </div>
                                         <!-- /이미지 미리보기 영역 -->
                                     </div>
@@ -200,16 +203,17 @@
                                     <div class="mb-3">
                                         <label for="productDescriptionImage" class="form-label">설명 이미지</label>
                                         <input type="file" class="form-control mb-2" id="productDescriptionImage"
-                                               name="productDescriptionImages" >
-                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
-                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
-                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
-                                        <input type="file" class="form-control mb-2" name="productDescriptionImages" >
+                                               name="productDescriptionImages">
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages">
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages">
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages">
+                                        <input type="file" class="form-control mb-2" name="productDescriptionImages">
                                         <!-- 이미지 미리보기 영역 -->
                                         <p>현재 등록된 이미지 미리보기</p>
-                                        <div  class="d-flex justify-content-start">
+                                        <div class="d-flex justify-content-start">
                                             <div th:each="desc : ${descriptionImagePath}">
-                                                <img th:if="${descriptionImagePath !=null}" th:src="@{${desc}}" style="width:100px; height:100px;">
+                                                <img th:if="${descriptionImagePath !=null}" th:src="@{${desc}}"
+                                                     style="width:100px; height:100px;">
                                             </div>
                                         </div>
                                         <!-- /이미지 미리보기 영역 -->
@@ -223,31 +227,61 @@
                                 <!-- 등록 버튼 -->
                                 <div>
                                     <button type="submit"
-                                            class="me-2 btn btn-secondary btn-lg text-nowrap">수정하기</button>
+                                            class="me-2 btn btn-secondary btn-lg text-nowrap">수정하기
+                                    </button>
                                 </div>
                                 <!-- /등록 버튼 -->
                                 <div>
                                     <!-- 목록 링크 -->
-                                    <a href="#">
+                                    <a href="/partner/product/list">
                                         <button type="button"
-                                                class="btn btn-secondary btn-lg text-nowrap">목록</button>
+                                                class="btn btn-secondary me-2 btn-lg text-nowrap">목록
+                                        </button>
                                     </a>
                                     <!-- /목록 링크 -->
                                 </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger btn-lg text-nowrap" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">
+                                        삭제
+                                    </button>
+                                </div>
                             </div>
-                            <!-- /버튼 영역 -->
-                        </div>
                     </form>
                     <!-- /상품 등록 폼 영역 -->
-                </div>
-                <!-- /폼 영역 넓이 조절 -->
-            </div>
-            <!-- /폼 영역 가운데 정렬 -->
-        </main>
-        <!-- /메인 컨테이너 -->
 
+                    <!-- Modal -->
+                    <form class="container" th:action="@{/partner/product/delete/{id}(id=${productId})}"
+                          th:method="delete">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body text-center" style="height:200px; align-content: center;" >
+                                        <h5 class="mb-5" th:text="${productName} + '을 삭제하시겠습니까?'"></h5>
+                                        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">취소
+                                        </button>
+                                        <button type="submit" class="btn btn-danger">삭제</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+
+            <!-- /모달 버튼과 모달 메세지 -->
     </div>
-    <!-- /레이아웃 컨테이너 -->
+    <!-- /폼 영역 넓이 조절 -->
+<!-- /폼 영역 가운데 정렬 -->
+</main>
+<!-- /메인 컨테이너 -->
+
+</div>
+<!-- /레이아웃 컨테이너 -->
 
 
 </div>

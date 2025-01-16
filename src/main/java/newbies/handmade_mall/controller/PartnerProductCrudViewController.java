@@ -2,8 +2,7 @@ package newbies.handmade_mall.controller;
 
 import lombok.RequiredArgsConstructor;
 import newbies.handmade_mall.common.ProductImageManager;
-import newbies.handmade_mall.dto.req.ProductCreateDto;
-import newbies.handmade_mall.dto.req.ProductUpdateDto;
+import newbies.handmade_mall.dto.req.ProductDto;
 import newbies.handmade_mall.dto.res.ProductListViewDto;
 import newbies.handmade_mall.dto.res.ProductUpdateImageViewDto;
 import newbies.handmade_mall.entity.Product;
@@ -25,19 +24,7 @@ public class PartnerProductCrudViewController {
     private final ProductCrudService productCrudService;
 
     private final ProductImageManager productImageManager;
-
-    /**
-     * @return 모달창 페이지
-     */
-    @GetMapping("/product/delete/{id}")
-    public String viewProductDeletePage(@PathVariable Long id, Model model){
-
-        Product product = productCrudService.findById(id);
-
-        model.addAttribute("product", product);
-
-        return "pages/partner/product/delete";
-    }
+    
 
     /**
      * @param id 삭제 할 id
@@ -53,17 +40,17 @@ public class PartnerProductCrudViewController {
 
 
     /**
-     *
      * @return 파트너 상품 리스트 페이지
      */
     @GetMapping("/product/list")
     public String viewProductListPage(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-        List<ProductListViewDto> productListViewDtos = productCrudService.viewDto();
+        List<ProductListViewDto> productListViewDtoList = productCrudService.viewDto();
 
-        model.addAttribute("productList", productListViewDtos);
+        model.addAttribute("productList", productListViewDtoList);
 
-        Page<ProductListViewDto> paging = productCrudService.getPagedProductList(page);
-        model.addAttribute("paging", paging);
+        Page<ProductListViewDto> productListViewDtoPage = productCrudService.getPagedProductList(page);
+
+        model.addAttribute("paging", productListViewDtoPage);
         model.addAttribute("currentPage", page);
 
         return "/pages/partner/product/list";
@@ -78,59 +65,64 @@ public class PartnerProductCrudViewController {
     public String viewProductUpdatePage(Model model, @PathVariable Long productId) {
 
         //상품 정보 나타내주기 위한 서비스 호출(모델에 넣을 DTO 불러오기)
-        ProductUpdateDto productUpdateDto = productCrudService.view(productId);
+        ProductDto productDto = productCrudService.view(productId);
 
         //상품 이미지 정보 나타내주기 위한 서비스 호출(모델에 넣을 DTO 불러오기)
         ProductUpdateImageViewDto productUpdateImageViewDto = productCrudService.viewImage(productId);
 
 
-        //모델에 담기
-        if (productUpdateDto != null) {
-            model.addAttribute("productId", productUpdateDto.getProductId()); //상품 아이디
-            model.addAttribute("productName", productUpdateDto.getProductName()); //상품명
-            model.addAttribute("category", productUpdateDto.getCategory()); //카테고리
-            model.addAttribute("sellingPrice", productUpdateDto.getSellingPrice()); //판매가
-            model.addAttribute("costPrice", productUpdateDto.getCostPrice()); //원가
-            model.addAttribute("discountRate", productUpdateDto.getDiscountRate()); //할인율
-            model.addAttribute("discountedPrice", productUpdateDto.getDiscountedPrice()); //할인가
-            model.addAttribute("margin", productUpdateDto.getMargin()); //마진
-            model.addAttribute("marginRate", productUpdateDto.getMarginRate()); //마진율
-            model.addAttribute("shippingFee", productUpdateDto.getShippingFee()); //배송비
-            model.addAttribute("count", productUpdateDto.getCount()); //재고 수량
-        }
+        ProductImage productMainImage = productUpdateImageViewDto.getMainProductImage();
 
-        //메인 이미지 null 체크
-        if (productUpdateImageViewDto.getMainProductImage() != null) {
+        String mainImagePath = null;
+
+        if (productMainImage != null) {
+            String mainImageUuid = productMainImage.getUuid().toString();
+            String mainImageExtension = productMainImage.getFileExtension();
+
             //메인이미지 경로(위치+UUID+확장자)
-            String mainImagePath = productImageManager.createImageUrl(productUpdateImageViewDto.getMainProductImage().getUuid() + productUpdateImageViewDto.getMainProductImage().getFileExtension());
-            model.addAttribute("mainImagePath", mainImagePath );
-        }
-        //카드 이미지 null 체크
-        if (productUpdateImageViewDto.getProductCardImages() != null) {
-            //카드이미지 경로를 담을 리스트 생성
-            List<String> newCardImageList = new ArrayList<>();
-
-            //카드이미지 경로(위치+UUID+확장자)
-            for (int i = 0; i < productUpdateImageViewDto.getProductCardImages().size(); i++) {
-                newCardImageList.add(productImageManager.createImageUrl(productUpdateImageViewDto.getProductCardImages().get(i).getUuid() + productUpdateImageViewDto.getProductCardImages().get(i).getFileExtension()));
-            }
-
-            model.addAttribute("cardImagePath",newCardImageList);
+            mainImagePath = productImageManager.createImageUrl(mainImageUuid + mainImageExtension);
         }
 
-        //설명 이미지 null 체크
-        if (productUpdateImageViewDto.getProductDescriptionImages() != null) {
-            //설명이미지 경로를 담을 리스트 생성
-            List<String> newDescriptionImageList = new ArrayList<>();
-
-            //설명이미지 경로(위치+UUID+확장자)
-            for(int i = 0; i< productUpdateImageViewDto.getProductDescriptionImages().size() ; i++) {
-                newDescriptionImageList.add(productImageManager.createImageUrl(productUpdateImageViewDto.getProductDescriptionImages().get(i).getUuid()+ productUpdateImageViewDto.getProductDescriptionImages().get(i).getFileExtension()));
-            }
+        model.addAttribute("mainImagePath", mainImagePath);
 
 
-            model.addAttribute("descriptionImagePath", newDescriptionImageList); //설명이미지 경로
+        //카드이미지 경로를 담을 리스트 생성
+        List<String> newCardImageList = new ArrayList<>();
+
+        //카드이미지 경로(위치+UUID+확장자)
+        for (int i = 0; i < productUpdateImageViewDto.getProductCardImages().size(); i++) {
+            ProductImage productCardImage = productUpdateImageViewDto.getProductCardImages().get(i);
+
+            newCardImageList.add(productImageManager.createImageUrl(productCardImage.getUuid() + productCardImage.getFileExtension()));
         }
+
+        model.addAttribute("cardImagePath", newCardImageList);
+
+        //설명이미지 경로를 담을 리스트 생성
+        List<String> newDescriptionImageList = new ArrayList<>();
+
+        //설명이미지 경로(위치+UUID+확장자)
+        for (int i = 0; i < productUpdateImageViewDto.getProductDescriptionImages().size(); i++) {
+            ProductImage productDescriptionImage = productUpdateImageViewDto.getProductDescriptionImages().get(i);
+
+            newDescriptionImageList.add(productImageManager.createImageUrl(productDescriptionImage.getUuid() + productDescriptionImage.getFileExtension()));
+        }
+
+
+        //모델에 담기
+        model.addAttribute("descriptionImagePath", newDescriptionImageList); //설명이미지 경로
+        model.addAttribute("productId", productDto.getProductId()); //상품 아이디
+        model.addAttribute("productName", productDto.getProductName()); //상품명
+        model.addAttribute("category", productDto.getCategory()); //카테고리
+        model.addAttribute("sellingPrice", productDto.getSellingPrice()); //판매가
+        model.addAttribute("costPrice", productDto.getCostPrice()); //원가
+        model.addAttribute("discountRate", productDto.getDiscountRate()); //할인율
+        model.addAttribute("discountedPrice", productDto.getDiscountedPrice()); //할인가
+        model.addAttribute("margin", productDto.getMargin()); //마진
+        model.addAttribute("marginRate", productDto.getMarginRate()); //마진율
+        model.addAttribute("shippingFee", productDto.getShippingFee()); //배송비
+        model.addAttribute("count", productDto.getCount()); //재고 수량
+
         return "pages/partner/product/update";
 
     }
@@ -141,9 +133,9 @@ public class PartnerProductCrudViewController {
      * @return 상품 수정 완료 ,리다이렉트 : 상품 목록
      */
     @PutMapping("/product/update")
-    public String updateProduct(ProductUpdateDto productUpdateDto, Product product, ProductImage productImage) {
-
-        productCrudService.update(productUpdateDto); //상품 수정 서비스 호출
+    public String updateProduct(ProductDto productDto, Product product, ProductImage productImage) {
+        //상품 수정 서비스 호출
+        productCrudService.update(productDto);
 
         return "redirect:/partner/product/list";
     }
@@ -152,7 +144,7 @@ public class PartnerProductCrudViewController {
      * @return 상품 등록 페이지
      */
     @GetMapping("/product/create")
-    public String viewProductCreatePage(){
+    public String viewProductCreatePage() {
         return "pages/partner/product/create";
     }
 
@@ -161,9 +153,9 @@ public class PartnerProductCrudViewController {
      * @return 상품 생성 완료, 상품 리스트로 리다이렉트
      */
     @PostMapping("/product/create")
-    public String createProduct(ProductCreateDto productCreateDto){
+    public String createProduct(ProductDto productDto) {
 
-        productCrudService.create(productCreateDto);
+        productCrudService.create(productDto);
 
         return "redirect:/partner/product/list";
     }

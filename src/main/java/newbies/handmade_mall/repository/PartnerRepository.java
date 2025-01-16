@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
-    public Optional<Partner> findByAccountId(String accountId);
+    Optional<Partner> findByAccountId(String accountId);
 }

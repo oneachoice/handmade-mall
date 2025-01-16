@@ -73,10 +73,8 @@
                   </a>
                 </td>
                 <td th:text="${productlist.category}"></td>
-
-                <!-- <a th:href="@{/partner/product/update/${product.productId}}" class="link-offset-2 link-underline link-underline-opacity-0"></a> -->
                 <td>
-                  <a href="@{/partner/product/update/{productId} (productId=${productlist.productId})}">
+                  <a th:href="@{update/{productId} (productId=${productlist.productId})}">
                     <span th:text="${productlist.productName}"></span>
                   </a>
                 </td>
@@ -94,7 +92,7 @@
         <!-- /상품 리스트 테이블 컨테이너-->
 
         <!-- 페이지네이션 -->
-        <nav aria-label="Page navigation ">
+        <nav aria-label="Page navigation" th:if="${not #lists.isEmpty(paging.content)}">
           <ul class="pagination justify-content-center pagination-sm">
             <!-- 이전 버튼 -->
             <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
