@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>로그인</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- 헤드 -->
+
+<!-- 바디 -->
+
+<body>
+    <div class="container">
+        <!-- 중앙 배치 -->
+        <div class="d-flex flex-column justify-content-center align-items-center min-vh-100">
+            <!-- 경고문 -->
+            <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger d-flex align-items-center"
+                role="alert">
+                <div th:text="${errorMessage}">
+                </div>
+            </div>
+            <!-- /경고문 -->
+            <!-- 로고 -->
+            <a href="/">
+                <a href="/">
+                    <img src="/images/로고초안2.png" style="width:150px;">
+                </a>
+            </a>
+            <!-- /로고 -->
+
+            <!-- 사이즈 조절용 -->
+            <div class="col col-md-8 col-lg-6 col-xxl-5">
+                <!-- 로그인 폼 -->
+                <form th:action="@{/login}" th:method="POST" class="border rounded p-4">
+                    <div class="mb-4 p-2">
+                        <h2 class="text-center">로그인</h2>
+                    </div>
+                    <!-- 아이디 인풋 -->
+                    <div class="mb-4">
+                        <label for="id" class="form-label">아이디</label>
+                        <input type="text" class="form-control" name="id" id="id" required />
+                    </div>
+                    <!-- 아이디 인풋 -->
+                    <!-- 비밀번호 인풋 -->
+                    <div class="mb-4">
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" name="password" id="password" required />
+                    </div>
+                    <!-- 비밀번호 인풋 -->
+                    <!-- 로그인 버튼 -->
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-lg btn-secondary w-100">
+                            로그인
+                        </button>
+                    </div>
+                    <!-- /로그인 버튼 -->
+                    <!-- 회원가입 링크 -->
+                    <div class="mb-1 text-center">
+                        <a href="/join"
+                            class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">회원가입</a>
+                    </div>
+                    <!-- /회원가입 링크 -->
+                </form>
+                <!-- /로그인 폼 -->
+            </div>
+            <!-- /사이즈 조절용 -->
+        </div>
+        <!-- /중앙 배치 -->
+    </div>
+
+    <!-- JS -->
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <!-- /JS -->
+</body>
+<!-- /바디 -->
+
+</html>

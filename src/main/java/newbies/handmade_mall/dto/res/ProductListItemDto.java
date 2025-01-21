@@ -7,12 +7,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 @Builder
-public class ProductListViewDto extends BaseTime {
+@AllArgsConstructor
+public class ProductListItemDto {
 
     /**
      * 상품 고유 아이디
@@ -58,7 +56,6 @@ public class ProductListViewDto extends BaseTime {
      * 상품 재고 수량
      */
     private Long count;
-
     /**
      * 상품 마진
      */
@@ -72,14 +69,10 @@ public class ProductListViewDto extends BaseTime {
     /**
      * 상품 등록 일자
      */
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     /**
      * UUID 와 확장자 조합
      */
     private String mainImagePath;
-
-    private Boolean isDeleted;
-
-
 }

@@ -34,7 +34,11 @@
       <!-- /경고문 -->
       <!-- 로고 -->
       <div class="mb-5">
-        <h1 class="display-3">로고</h1>
+      <!-- 수제청 홈페이지로 이동 -->
+        <a href="/">
+          <img src="/images/로고초안2.png" style="width:150px;">
+        </a>
+        <!-- /수제청 홈페이지로 이동 -->
       </div>
       <!-- /로고 -->
 
@@ -43,7 +47,7 @@
         <!-- 로그인 폼 -->
         <form th:action="@{/partner/login}" th:method="POST" class="border rounded p-4">
           <div class="mb-4 p-2">
-            <h2>로그인</h2>
+            <h2 class="text-center">로그인</h2>
           </div>
           <div class="mb-4">
             <label for="partner-id" class="form-label">아이디</label>

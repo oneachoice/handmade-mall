@@ -25,7 +25,7 @@ public class Product extends BaseTime {
 
 
     @ManyToOne
-    @JoinColumn(name = "partner_id")
+    @JoinColumn(name = "partner_id", nullable = false)
     @Comment("파트너 외래키")
     private Partner partner;
 

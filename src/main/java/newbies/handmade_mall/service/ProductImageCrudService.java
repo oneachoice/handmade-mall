@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import newbies.handmade_mall.common.ProductImageManager;
 import newbies.handmade_mall.common.ProductImageType;
 import newbies.handmade_mall.dto.req.ProductDto;
+import newbies.handmade_mall.dto.res.ProductImageUrlDto;
 import newbies.handmade_mall.entity.Product;
 import newbies.handmade_mall.entity.ProductImage;
+import newbies.handmade_mall.mapper.ProductImageMapper;
 import newbies.handmade_mall.repository.ProductImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ public class ProductImageCrudService {
 
     private final ProductImageManager productImageManager;
 
+    private final ProductImageMapper productImageMapper;
+
 
     /**
      * 상품 이미지 업데이트 메서드
@@ -32,41 +36,53 @@ public class ProductImageCrudService {
      */
     public ProductImage update(ProductDto productDto, Product product) {
 
-        List<ProductImage> productImages = productImageRepository.findByProductId(product.getId()); //상품FK로 리스트 불러옴
+        // 기존 이미지 모두 삭제
+        productImageRepository.deleteByProductId(product.getId());
 
-        //리스트 안의 목록 다 삭제
-        for (ProductImage productImage : productImages) {
-            productImageRepository.deleteById(productImage.getId());
-        }
-
-        //새로 입력한 사진 다시 저장
         //카드 이미지 저장
-        save(productDto.getProductCardImages(), ProductImageType.CARD, product);
+        save(productDto.getProductCardImages(), product, ProductImageType.CARD);
 
         //설명 이미지 저장
-        save(productDto.getProductDescriptionImages(), ProductImageType.DESC, product);
+        save(productDto.getProductDescriptionImages(), product, ProductImageType.DESC);
 
-        //메인 이미지 저장 후 반환
-        return save(productDto.getMainProductImage(), ProductImageType.MAIN, product);
+        // Product에 저장하기 위한 상품 대표이미지
+        return save(productDto.getMainProductImage(), product, ProductImageType.MAIN);
 
     }
 
     public ProductImage create(ProductDto productDto, Product product) {
 
         // 카드 이미지 저장
-        save(productDto.getProductCardImages(), ProductImageType.CARD, product);
+        save(productDto.getProductCardImages(), product, ProductImageType.CARD);
 
         // 설명 이미지 저장
-        save(productDto.getProductDescriptionImages(), ProductImageType.DESC, product);
+        save(productDto.getProductDescriptionImages(), product, ProductImageType.DESC);
 
         // 대표 이미지 저장 후 반환
-        return save(productDto.getMainProductImage(), ProductImageType.MAIN, product);
+        return save(productDto.getMainProductImage(), product, ProductImageType.MAIN);
+    }
+
+    public List<ProductImage> getProductImagesByProductId(Long productId) {
+        return productImageRepository.findByProductId(productId);
+    }
+
+    /**
+     * DB에 등록되어 있는 상품별 이미지 정보를 수정 화면에 나타내기 위한 메서드
+     *
+     * @return 상품 기존 이미지 정보 DTO
+     */
+    public ProductImageUrlDto getProductImagesDto(Long productId) {
+
+        //제품 FK로 찾은 리스트
+        List<ProductImage> productImages = getProductImagesByProductId(productId);
+
+        return productImageMapper.toProductImageUrlDto(productImages);
     }
 
     /**
      * 이미지 파일 DB에 저장
      */
-    private ProductImage save(MultipartFile imageFile, ProductImageType productImageType, Product product) {
+    private ProductImage save(MultipartFile imageFile, Product product, ProductImageType productImageType) {
         // 이미지 파일 존재 여부 확인
         if (imageFile.isEmpty()) return null;
 
@@ -83,9 +99,9 @@ public class ProductImageCrudService {
         return productImageRepository.save(mainProductImage);
     }
 
-    private void save(List<MultipartFile> imageFiles, ProductImageType productImageType, Product product) {
+    private void save(List<MultipartFile> imageFiles, Product product, ProductImageType productImageType) {
         imageFiles.forEach((imageFile) -> {
-            save(imageFile, productImageType, product);
+            save(imageFile, product, productImageType);
         });
     }
 }

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- CSS -->
+<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+<!-- /CSS -->
+<!-- 상단 바  -->
+<header th:replace="~{/fragments/customer-navigation :: headerFragments}"></header>
+<!-- /상단 바 -->
+
+<body>
+    <!-- 메인 컨테이너 -->
+    <main class="col">
+        <!-- 상품 리트스 테이블 컨테이너-->
+        <div class="container p-5">
+            <div class="container text-center">
+                <!-- 메인이미지 -->
+                <div class="row">
+                    <div class="col">
+                        <span class="container">
+                            <img id="bigpic" th:src="${mainImagePath}" class="rounded" alt="..." width="600px"
+                                height="600px" />
+                        </span>
+                    </div>
+                    <!-- /메인이미지 -->
+                    <div class="col container p-5 border">
+                        <div th:text="${productName}" class="fs-2 p-4"></div>
+                        
+                        <div th:text="${sellingPrice}" id="sellingPrice"
+                            class="fs-5 text-decoration-line-through text-secondary"></div>
+
+                        <span th:text="${discountRate}" class="fs-3 text-danger" id="discountRate"></span>
+                        <span th:text="${discountedPrice}" class="fs-3 p-4" id="discountedPrice"></span>
+
+                        <!-- 수량 입력 -->
+                        <div class="p-3 col-6 container">
+                            <label for="count"></label>
+                            <input type="number" id="count" min="0" class="form-control" placeholder="수량을 입력해주세요."/>
+                          </div>
+                        <!-- 총 가격 -->
+                        <div class="fs-3">
+                            총 상품 금액: <span id="totalPrice">0원</span>
+                        </div>
+
+                        <div>배송비 : <span th:text="${shippingFee}" class="p-4" id="shippingFee"></span></div>
+                        <div class="d-grid gap-2 col-8 mx-auto position-relative py-5">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                구매하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 메인이미지 + 카드이미지 -->
+                <div class="container p-3">
+                    <div class="row row-cols-auto">
+                        <span class="col">
+                            <!-- 메인이미지 -->
+                            <span class="col">
+                                <img th:src="${mainImagePath}" class="rounded object-fit-cover smallpic" width="145px"
+                                    height="145px" />
+                            </span>
+                            <!-- /메인 이미지 -->
+                            <!-- 카드 이미지 -->
+                            <span th:each="imagePath : ${cardImagePath}">
+                                <span class="col">
+                                    <img th:src="${imagePath}" class="rounded object-fit-cover smallpic" width="145px"
+                                        height="145px" />
+                                </span>
+                            </span>
+                            <!-- 카드 이미지 -->
+                        </span>
+                    </div>
+                </div>
+                <!-- /메인이미지 + 카드이미지 -->
+
+                <!-- 상품설명 전 공백 -->
+                <br />
+                <hr />
+                <br />
+                <!-- /상품설명 전 공백 -->
+
+                <!-- 설명이미지 -->
+                
+                <div class="container">
+                    <div class="container text-center">
+                        <div class="row">
+                            <div th:each="imagePath : ${descriptionImagePath}">
+                                <img th:src="${imagePath}" class="rounded object-fit-fill" width="1200px"
+                                    height="1200px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /설명이미지 -->
+            </div>
+        </div>
+    </main>
+</body>
+
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    // 공통 함수: 소수점 제거 및 천 단위 구분
+    function formatAndUpdatePrice(elementId) {
+        var element = document.querySelector(elementId);
+        var price = parseFloat(element.textContent.replace(/[^0-9.]/g, "")) || 0; // 숫자 추출
+        var formattedPrice = Math.floor(price).toLocaleString(); // 소수점 제거 및 포맷
+        element.textContent = formattedPrice + "원"; // 값 업데이트
+    }
+
+    formatAndUpdatePrice("#sellingPrice");
+    formatAndUpdatePrice("#discountedPrice");
+    formatAndUpdatePrice("#shippingFee");
+
+    // 할인률 소수점 제거
+    var discountRateElement = document.querySelector("#discountRate"); // 요소 가져오기
+    var discountRate =
+        parseFloat(discountRateElement.textContent.replace(/[^0-9.]/g, "")) || 0; // 숫자 추출
+    var formattedRate = Math.floor(discountRate).toLocaleString(); // 소수점 제거 및 포맷
+    discountRateElement.textContent = formattedRate + "%"; // 업데이트
+
+    var bigImg = document.querySelector("#bigpic");
+    var smallImg = document.querySelectorAll(".smallpic");
+
+    for (var i = 0; i < smallImg.length; i++) {
+        smallImg[i].addEventListener("click", changepic);
+    }
+
+    function changepic() {
+        var smallImgAttribute = this.getAttribute("src");
+        bigImg.setAttribute("src", smallImgAttribute);
+    }
+
+    // 요소 가져오기
+    var countElement = document.querySelector("#count");
+    var discountedPriceElement = document.querySelector("#discountedPrice");
+    var totalPriceElement = document.querySelector("#totalPrice");
+
+    // 할인 가격 값 가져오기
+    var discountedPrice =
+        parseFloat(discountedPriceElement.textContent.replace(/[^0-9]/g, "")) ||
+        0; // 텍스트에서 숫자만 추출 후 숫자로 변환
+
+    // 수량 입력 시 총 가격 계산
+    countElement.addEventListener("input", function () {
+        // 수량 값 가져오기
+        var count = parseInt(countElement.value) || 0;
+
+        // 총 가격 계산
+        var totalPrice = count * discountedPrice;
+
+        // 총 가격 표시
+        totalPriceElement.textContent = totalPrice.toLocaleString() + "원";
+    });
+</script>
+
+</html>

@@ -1,14 +1,11 @@
 package newbies.handmade_mall.service;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import newbies.handmade_mall.dto.req.LoginDto;
 import newbies.handmade_mall.entity.Partner;
 import newbies.handmade_mall.repository.PartnerRepository;
+import newbies.handmade_mall.util.SessionManager;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Optional;
 
@@ -43,15 +40,7 @@ public class PartnerLoginService {
         // 비밀번호가 일치하지 않으면 메서드 종료
         if(!foundPartner.getAccountPassword().equals(partnerAccountPassword)) return false;
 
-
-        // RequestContextHolder에서 ServletRequestAttributes 얻기
-        ServletRequestAttributes servletRequestAttribute = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-
-        // Session 가져오기
-        HttpSession httpSession = servletRequestAttribute.getRequest().getSession(true);
-        
-        // Session에 partnerId 저장
-        httpSession.setAttribute("partnerId", partnerAccountId);
+        SessionManager.setHttpSessionAttribute("partnerId",  partnerAccountId);
 
         return true;
     }

@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 상속 시 엔티티에 '생성일'과 '수정일'을 컬럼으로 추가해줍니다.
@@ -29,6 +30,8 @@ public abstract class BaseTime {
             nullable = false
     )
     protected LocalDateTime createdAt;
+
+
 
     @Comment("마지막 수정일")
     @LastModifiedDate

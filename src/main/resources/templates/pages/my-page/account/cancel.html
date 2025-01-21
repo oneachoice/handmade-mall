@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+  <!-- 메타데이터 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!-- 메타데이터 -->
+
+  <!-- 제목 -->
+  <title>회원 탈퇴</title>
+  <!-- /제목 -->
+
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+  <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+  <!--루트 컨테이너-->
+  <div>
+    <!-- 레이아웃 컨테이너 -->
+    <div class="row min-vh-100 g-0">
+      <main>
+        <!-- Button trigger modal -->
+        <button id="modalButton" type="button" style="display: none;" class="btn btn-primary" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop">
+        </button>
+
+        <!-- Modal -->
+        <!-- 배경 밖을 클릭해도 닫히지 않게 설정 -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <!-- 모달 수직 가운데 정렬 -->
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body text-center" style="height: 200px; align-content: center;">
+                정말 <b class="fs-5">회원 탈퇴</b> 하시겠습니까?
+              </div>
+              <!-- 폼 영역 -->
+              <form th:action="@{/my-page/account/cancel}" th:method="delete">
+                <div class="d-flex justify-content-center" style="height: 90px;">
+                  <!-- 버튼 영역 -->
+                  <a th:href="@{/my-page}" class="btn btn-secondary m-2 h-50 w-25"
+                    style="align-content: center;">아니오</a>
+                  <button type="submit" class="btn btn-primary m-2 h-50 w-25">네</button>
+                  <!-- /버튼 영역 -->
+              </form>
+              <!-- /폼 영역 -->
+            </div>
+          </div>
+        </div>
+    </div>
+    </main>
+    <!-- /메인 컨테이너 -->
+
+  </div>
+  <!-- /레이아웃 컨테이너 -->
+
+
+  </div>
+  <!--/루트 컨테이너-->
+  <!-- JS -->
+  <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+  <!-- /JS -->
+
+  <!-- Custom JS -->
+  <script>
+    document.getElementById("modalButton").click();   //모달 버튼 자동 클릭
+  </script>
+  <!-- /Custom JS -->
+</body>
+<!-- 바디 -->
+
+</html>

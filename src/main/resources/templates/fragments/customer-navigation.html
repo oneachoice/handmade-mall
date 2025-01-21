@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>고객 페이지 네비게이션</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}"/>
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<body>
+<!-- 레이아웃 컨테이너 -->
+<div class="row min-vh-100 g-0">
+    <!-- 상단 바  -->
+    <header class="p-3 border-bottom" th:fragment="headerFragments">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                </a>
+                <a href="/">
+                    <img th:src="@{/images/로고초안2.png}" style="width:50px;">
+                </a>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            카테고리
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">과일청</a></li>
+                            <li><a class="dropdown-item" href="#">선물용</a></li>
+                        </ul>
+                    </li>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-dark" type="submit">Search</button>
+                    </form>
+                </ul>
+
+                <div class="text-end">
+                    <div th:if="${session.customerId == null}">
+                        <button type="button" class="btn btn-light me-3"
+                                onclick="location.href='/login'">로그인
+                        </button>
+                        <button type="button" class="btn btn-secondary"
+                                onclick="location.href='/join'">회원가입
+                        </button>
+                    </div>
+                    <div th:unless="${session.customerId == null}">
+                        <a th:href="@{/my-page}"><span
+                                th:text="${session.customerName}+'님'"></span></a>
+                        <button type="button" class="btn btn-secondary ms-4"
+                                onclick="location.href='/logout'">로그아웃
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--  /상단바 -->
+</div>
+</body>
+
+</html>

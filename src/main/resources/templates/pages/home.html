@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>홈</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+
+    <!-- 스타일 -->
+    <style>
+        #topButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+    <!-- /스타일 -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+    <!--루트 컨테이너-->
+    <div>
+        <!-- 레이아웃 컨테이너 -->
+        <div class="row min-vh-100 g-0">
+            <!-- 상단바 -->
+            <header th:replace="~{/fragments/customer-navigation :: headerFragments}"></header>
+            <!--  /상단바 -->
+
+            <!-- 메인 컨테이너 -->
+            <main class="min-vh-100 ">
+                <!-- 캐러샐 영역 -->
+                <div class="justify-content-center d-flex">
+                    <div id="carouselExampleIndicators" class="carousel slide col-11" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="/images/img1.jpeg" style="height: 700px;" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/images/img2.jpeg" style="height: 700px;" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/images/img3.jpeg" style="height: 700px;" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- /캐러샐 영역 -->
+                <!--상품 영역-->
+                <div class="container mt-5">
+                    <div th:each="product : ${product}" class="card me-4 mb-5 d-inline-block" style="width: 18rem;">
+                        <!-- 상품 이미지 -->
+                        <img th:src="${product.mainImagePath}" class="card-img-top" style="height : 18rem;">
+                        <!-- /상품 이미지 -->
+                        <div class="card-body" style="height : 9rem">
+                            <!-- 상품 이름 -->
+                            <div style="height: 50px;">
+                                <b>
+                                    <p class="card-text" th:text="${product.productName}"></p>
+                                </b>
+                            </div>
+                            <!-- /상품 이름 -->
+                            <!-- 상품 가격 -->
+                            <div>
+                                <span th:text="${product.sellingPrice}"
+                                    class="sellingPrice text-decoration-line-through"></span>
+                                <b><span th:text="${product.discountRate}" class="discountRate text-danger"></span></b>
+                                <b>
+                                    <p th:text="${product.discountPrice}" class="discountPrice fs-4"></p>
+                                </b>
+                            </div>
+                            <!-- 상품 가격 -->
+                        </div>
+                    </div>
+                </div>
+                <!--/상품 영역-->
+                <!-- 더 많은 상품보기 버튼 -->
+                <div class="d-grid gap-2 col-2 mx-auto">
+                    <button class="btn btn-secondary" type="button" onclick="location.href='customer/product/list'">더 많은 상품보기</button>
+                </div>
+                <!-- /더 많은 상품보기 버튼 -->
+                <!-- Top버튼 -->
+                <div>
+                    <button class="btn btn-secondary " type="button" id="topButton"> Top</button>
+                </div>
+                <!-- /Top버튼 -->
+            </main>
+            <!-- /메인 컨테이너 -->
+             
+            <!-- 푸터 -->
+            <div class="container">
+                <footer th:replace="~{/fragments/customer-footer :: footerFragments}"></footer>
+            </div>
+            <!-- /푸터 -->
+
+        </div>
+        <!-- /레이아웃 컨테이너 -->
+
+
+    </div>
+    <!--/루트 컨테이너-->
+    <!-- JS -->
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <!-- /JS -->
+
+    <!-- Custom JS -->
+    <script>
+        // 각 가격에 대해 값을 가져오는 함수
+        const sellingPriceElements = document.querySelectorAll(".sellingPrice");
+        const discountRateElements = document.querySelectorAll(".discountRate");
+        const discountPriceElements = document.querySelectorAll(".discountPrice");
+
+        // 값을 포맷팅하는 함수
+        function formatPrice(price) {
+            return price.toLocaleString();  // 1000단위로 콤마 추가
+        }
+
+        // 각 상품에 대해 반복 처리
+        sellingPriceElements.forEach((sellingPriceElement, index) => {
+            const sellingPrice = parseFloat(sellingPriceElement.textContent.trim());
+            let discountRate = parseFloat(discountRateElements[index].textContent.trim());
+            const discountPrice = parseFloat(discountPriceElements[index].textContent.trim());
+
+            //할인율을 내림하여 정수로 나타냄
+            discountRate = Math.floor(discountRate);
+
+            // 포맷팅된 값으로 업데이트
+            sellingPriceElement.textContent = formatPrice(sellingPrice) + '원';
+            discountRateElements[index].textContent = discountRate + '%';  // 할인율은 퍼센트 표시
+            discountPriceElements[index].textContent = formatPrice(discountPrice) + '원';
+        });
+
+        //top버튼 
+        const topButton = document.getElementById("topButton");
+
+        // Top 버튼 클릭 시 상단으로 스크롤
+        topButton.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0
+            });
+        });
+
+    </script>
+    <!-- /Custom JS -->
+</body>
+<!-- 바디 -->
+
+</html>

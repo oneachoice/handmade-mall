@@ -1,30 +1,29 @@
 package newbies.handmade_mall.controller;
 
 import lombok.RequiredArgsConstructor;
-import newbies.handmade_mall.common.ProductImageManager;
 import newbies.handmade_mall.dto.req.ProductDto;
-import newbies.handmade_mall.dto.res.ProductListViewDto;
-import newbies.handmade_mall.dto.res.ProductUpdateImageViewDto;
+import newbies.handmade_mall.dto.res.ProductImageUrlDto;
+import newbies.handmade_mall.dto.res.ProductListItemDto;
 import newbies.handmade_mall.entity.Product;
 import newbies.handmade_mall.entity.ProductImage;
 import newbies.handmade_mall.service.ProductCrudService;
+import newbies.handmade_mall.service.ProductImageCrudService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/partner")
-public class PartnerProductCrudViewController {
+public class PartnerCrudViewController {
 
     private final ProductCrudService productCrudService;
 
-    private final ProductImageManager productImageManager;
-    
+    private final ProductImageCrudService productImageCrudService;
 
     /**
      * @param id 삭제 할 id
@@ -32,8 +31,7 @@ public class PartnerProductCrudViewController {
      */
     @DeleteMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
-
-        productCrudService.delete(id);
+        productCrudService.removeProductById(id);
 
         return "redirect:/partner/product/list";
     }
@@ -43,15 +41,12 @@ public class PartnerProductCrudViewController {
      * @return 파트너 상품 리스트 페이지
      */
     @GetMapping("/product/list")
-    public String viewProductListPage(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-        List<ProductListViewDto> productListViewDtoList = productCrudService.viewDto();
+    public String viewProductListPage(Model model, @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 5, page = 0) Pageable pageable) {
+        Page<ProductListItemDto> productListViewDtoPage = productCrudService.getProductListItemDtoPage(pageable);
 
-        model.addAttribute("productList", productListViewDtoList);
-
-        Page<ProductListViewDto> productListViewDtoPage = productCrudService.getPagedProductList(page);
-
+        model.addAttribute("productList", productListViewDtoPage.getContent());
         model.addAttribute("paging", productListViewDtoPage);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPage", productListViewDtoPage.getNumber());
 
         return "/pages/partner/product/list";
     }
@@ -65,52 +60,14 @@ public class PartnerProductCrudViewController {
     public String viewProductUpdatePage(Model model, @PathVariable Long productId) {
 
         //상품 정보 나타내주기 위한 서비스 호출(모델에 넣을 DTO 불러오기)
-        ProductDto productDto = productCrudService.view(productId);
+        ProductDto productDto = productCrudService.getProductDto(productId);
 
-        //상품 이미지 정보 나타내주기 위한 서비스 호출(모델에 넣을 DTO 불러오기)
-        ProductUpdateImageViewDto productUpdateImageViewDto = productCrudService.viewImage(productId);
-
-
-        ProductImage productMainImage = productUpdateImageViewDto.getMainProductImage();
-
-        String mainImagePath = null;
-
-        if (productMainImage != null) {
-            String mainImageUuid = productMainImage.getUuid().toString();
-            String mainImageExtension = productMainImage.getFileExtension();
-
-            //메인이미지 경로(위치+UUID+확장자)
-            mainImagePath = productImageManager.createImageUrl(mainImageUuid + mainImageExtension);
-        }
-
-        model.addAttribute("mainImagePath", mainImagePath);
-
-
-        //카드이미지 경로를 담을 리스트 생성
-        List<String> newCardImageList = new ArrayList<>();
-
-        //카드이미지 경로(위치+UUID+확장자)
-        for (int i = 0; i < productUpdateImageViewDto.getProductCardImages().size(); i++) {
-            ProductImage productCardImage = productUpdateImageViewDto.getProductCardImages().get(i);
-
-            newCardImageList.add(productImageManager.createImageUrl(productCardImage.getUuid() + productCardImage.getFileExtension()));
-        }
-
-        model.addAttribute("cardImagePath", newCardImageList);
-
-        //설명이미지 경로를 담을 리스트 생성
-        List<String> newDescriptionImageList = new ArrayList<>();
-
-        //설명이미지 경로(위치+UUID+확장자)
-        for (int i = 0; i < productUpdateImageViewDto.getProductDescriptionImages().size(); i++) {
-            ProductImage productDescriptionImage = productUpdateImageViewDto.getProductDescriptionImages().get(i);
-
-            newDescriptionImageList.add(productImageManager.createImageUrl(productDescriptionImage.getUuid() + productDescriptionImage.getFileExtension()));
-        }
-
+        ProductImageUrlDto productImageUrlDto = productImageCrudService.getProductImagesDto(productId);
 
         //모델에 담기
-        model.addAttribute("descriptionImagePath", newDescriptionImageList); //설명이미지 경로
+        model.addAttribute("mainImagePath", productImageUrlDto.getMainImageUrl());
+        model.addAttribute("cardImagePath", productImageUrlDto.getCardImageUrls());
+        model.addAttribute("descriptionImagePath", productImageUrlDto.getDescriptionImageUrls()); //설명이미지 경로
         model.addAttribute("productId", productDto.getProductId()); //상품 아이디
         model.addAttribute("productName", productDto.getProductName()); //상품명
         model.addAttribute("category", productDto.getCategory()); //카테고리
@@ -155,7 +112,7 @@ public class PartnerProductCrudViewController {
     @PostMapping("/product/create")
     public String createProduct(ProductDto productDto) {
 
-        productCrudService.create(productDto);
+        productCrudService.createByProductDto(productDto);
 
         return "redirect:/partner/product/list";
     }

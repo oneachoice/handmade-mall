@@ -54,4 +54,8 @@ public class ProductImage extends BaseTime {
     private ProductImageType productImageType;
 
 
+    @Transient
+    public String getImageFullName() {
+        return this.uuid.toString() + this.fileExtension;
+    }
 }
