@@ -89,6 +89,9 @@ public class Product extends BaseTime {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImageList;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CheckoutProduct> checkoutProductList;
+
     @Transient
     public String getProductCode() {
         String categoryName = category.toString();

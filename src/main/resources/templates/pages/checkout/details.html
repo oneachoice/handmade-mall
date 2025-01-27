@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>홈</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+    <!--루트 컨테이너-->
+    <div>
+        <!-- 레이아웃 컨테이너 -->
+        <div class="row min-vh-100 g-0">
+            <!-- 상단바 -->
+            <header th:replace="~{/fragments/customer-navigation :: headerFragments}"></header>
+            <!--  /상단바 -->
+
+            <!-- 메인 컨테이너 -->
+            <main class="min-vh-100 ">
+                <div class="container mt-5">
+
+                    <!-- 카드 영역 -->
+                    <div class="card d-flex justify-content-between p-2">
+                        <div class="row">
+                            <!-- 카드 이미지 -->
+                            <div class="col-md-4">
+                                <a th:href="@{'/customer/product/details/' + ${productId}}">
+                                    <img th:src="${mainImagePath}" class="img-fluid rounded-start" alt="...">
+                                </a>
+                            </div>
+                            <!-- /카드 이미지 -->
+                            <!-- 카드 바디 -->
+                            <div class="col-md-8">
+                                <div class="card-body h-100  d-flex flex-column justify-content-center">
+                                    <!-- 주문 상태 -->
+                                    <div class="row mb-2">
+                                        <div class="col d-flex justify-content-end">
+                                            <span th:text="${checkoutProductState}"></span>
+                                        </div>
+                                    </div>
+                                    <!-- /주문 상태 -->
+                                    <!-- 상품명 -->
+                                    <div class="row mb-2">
+                                        <div class="col">
+                                            <a class="link-body-emphasis link-underline link-underline-opacity-0 " th:href="@{'/customer/product/details/' + ${productId}}">
+                                                <b>
+                                                    <h5 th:text="${productName}"></h5>
+                                                </b>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- /상품명 -->
+                                    <!-- 개수 -->
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <s>
+                                                <span>판매가 :</span>
+                                                <span class="totalSellingPrice" th:text="${totalSellingPrice}"></span>
+                                            </s>
+                                        </div>
+                                    </div>
+                                    <!-- /개수 -->
+                                    <!-- 할인가 -->
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <span>할인가 : </span>
+                                            <span class="totalDiscountedPrice" th:text="${totalDiscountedPrice}"></span>
+                                        </div>
+                                    </div>
+                                    <!-- /할인가 -->
+                                    <!-- 총합 -->
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <span>배송비 : </span>
+                                            <span class="shippingFee" th:text="${shippingFee}"></span>
+                                        </div>
+                                    </div>
+                                    <!-- /총합 -->
+                                    <!-- 수량 -->
+                                    <div class="row mb-3">
+                                        <div class="col">
+                                            <span>수량 : </span>
+                                            <span th:text="${count}"></span>
+                                        </div>
+                                    </div>
+                                    <!-- /수량 -->
+                                    <!-- 버튼 -->
+                                    <div class="row mt-5">
+                                        <div class="col d-flex justify-content-end">
+                                            <a th:href="@{'/customer/product/details/' + ${productId}}">
+                                                <button type="button" class="btn btn-secondary btn-lg mt-3">재구매</button>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- /버튼 -->
+
+                                </div>
+                                <!-- /카드 바디 -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /카드 영역 -->
+                </div>
+                <!-- 배송 정보 및 금액 정보 -->
+                <div class="container border mt-5 p-3" style="min-height: 300px;">
+                    <div class="row">
+                        <!-- 배송정보 -->
+                        <div class="col d-flex flex-column justify-content-around" style="height: 300px;">
+                            <div class="row">
+                                <div class="col">
+                                    <span>받는 분 :</span>
+                                </div>
+                                <div class="col">
+                                    <span th:text="${recipient}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span>연락처 :</span>
+                                </div>
+                                <div class="col">
+                                    <span th:text="${recipientPhoneNumber}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span>배송지 :</span>
+                                </div>
+                                <div class="col">
+                                    <span th:text="${shippingAddress}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /배송정보 -->
+                        <!-- 금액 정보 -->
+                        <div class="col d-flex flex-column justify-content-around" style="height: 300px;">
+                            <div class="row">
+                                <div class="col">
+                                    <span>전체 판매가 :</span>
+                                </div>
+                                <div class="col">
+                                    <span class="totalSellingPrice" th:text="${totalSellingPrice}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span>전체 할인가 :</span>
+                                </div>
+                                <div class="col">
+                                    <span class="totalDiscountedPrice" th:text="${totalDiscountedPrice}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span>전체 배송비 :</span>
+                                </div>
+                                <div class="col">
+                                    <span class="shippingFee" th:text="${shippingFee}"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h3>최종 결제 가격</h3>
+                                </div>
+                                <div class="col">
+                                    <h3 class="totalPrice" th:text="${totalPrice}"></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /금액정보 -->
+                    </div>
+                </div>
+                <!-- 배송 정보 및 금액 정보 -->
+
+            </main>
+            <!-- /메인 컨테이너 -->
+
+            <!-- 푸터 -->
+            <div class="container">
+                <footer th:replace="~{/fragments/customer-footer :: footerFragments}"></footer>
+            </div>
+            <!-- /푸터 -->
+
+        </div>
+        <!-- /레이아웃 컨테이너 -->
+
+
+    </div>
+    <!--/루트 컨테이너-->
+    <!-- JS -->
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <!-- /JS -->
+
+    <!-- Custom JS -->
+    <script>
+
+        // 가격을 1000단위로 콤마 찍고 소수점 없애는 함수
+        function formatPrice(price) {
+            return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원";
+        }
+
+
+        const priceElements = document.querySelectorAll('.totalSellingPrice, .totalDiscountedPrice, .shippingFee, .totalPrice');
+
+        priceElements.forEach(function (element) {
+            let price = parseFloat(element.innerText.replace(/[^0-9.-]+/g, "")); // 숫자만 추출
+            if (!isNaN(price)) {
+                element.innerText = formatPrice(price); // 형식 변경
+            }
+        });
+
+
+    </script>
+    <!-- /Custom JS -->
+</body>
+<!-- 바디 -->
+
+</html>

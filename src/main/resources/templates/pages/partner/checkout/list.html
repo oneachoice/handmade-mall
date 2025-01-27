@@ -11,7 +11,7 @@
   <!-- 메타데이터 -->
 
   <!-- 제목 -->
-  <title>파트너 상품 리스트</title>
+  <title>파트너 주문 리스트</title>
   <!-- /제목 -->
 
   <!-- CSS -->
@@ -37,20 +37,12 @@
 
       <!-- 메인 컨테이너 -->
       <main class="col-9 col-sm-10">
-        <!-- 상품 리트스 테이블 컨테이너-->
+        <!-- 상품 리스트 테이블 컨테이너-->
         <div class="container p-5">
           <h3>등록된 상품 리스트</h3>
           <br />
 
-          <!-- 상품 등록 버튼 -->
-          <div class="d-flex justify-content-end mb-3">
-            <a href="/partner/product/create">
-              <button type="button" class="btn btn-secondary me-2 btn-lg text-nowrap">상품 등록
-              </button>
-            </a>
-          </div>
-          <!-- /상품 등록 버튼 -->
-          <h4 th:text="${'등록된 상품의 수: '+ paging.totalElements}"></h4>
+          <h4 th:text="${'등록된 주문의 수: '+ paging.totalElements}"></h4>
           <!-- 단위 금액 관련-->
           <div class="container">
             <div class="row justify-content-end">
@@ -61,24 +53,25 @@
           <table class="table table-bordered table-hover text-center">
             <thead>
               <tr>
-                <th scope="col">상품 코드</th>
-                <th scope="col">이미지</th>
-                <th scope="col">카테고리</th>
+                <th scope="col">주문 코드</th>
+                <th scope="col">상품 이미지</th>
                 <th style="width:140px;" scope="col">상품명</th>
-                <th scope="col">판매가</th>
-                <th scope="col">할인가</th>
-                <th scope="col">할인율</th>
-                <th scope="col">재고</th>
-                <th scope="col">마진가</th>
+                <th scope="col">주문자ID</th>
+                <th scope="col">주문날짜</th>
+                <th scope="col">개수</th>
+                <th scope="col">판매금액</th>
+                <th scope="col">배송비</th>
+                <th scope="col">마진</th>
                 <th scope="col">마진율</th>
-                <th scope="col">등록일자</th>
+                <th scope="col">주문확인여부</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="productlist : ${paging.content}" style="vertical-align: middle;">
-                <th scope="row" th:text="${productlist.productCode}" ></th>
+                <th scope="row" th:text="${productlist.productCode}"></th>
                 <td>
-                  <a th:href="@{/customer/product/details/{productId} (productId=${productlist.productId})}">
+                  <a th:href="@{/product/details/{productId} (productId=${productlist.productId})}">
+
                     <img th:src="${productlist.mainImagePath}" width="100px" height="100px" alt="Product Image" />
                   </a>
                 </td>
@@ -122,9 +115,9 @@
 
             <!-- 페이지 번호 -->
             <li class="page-item"
-                th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0,
-                                       currentPage + 3 < paging.totalPages - 1 ? currentPage + 3 : paging.totalPages - 1)}"
-                th:classappend="${pageNum == currentPage} ? 'active' : ''">
+              th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0, 
+                                               currentPage + 3 < paging.totalPages - 1 ? currentPage + 3 : paging.totalPages - 1)}"
+              th:classappend="${pageNum == currentPage} ? 'active' : ''">
               <a class="page-link" th:href="@{/partner/product/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
             </li>
             <!-- /페이지 번호 -->
@@ -132,17 +125,10 @@
             <!-- 다음 버튼 -->
             <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
               <a class="page-link" th:href="@{/partner/product/list(page=${currentPage + 1})}" aria-label="Next">
-                <span aria-hidden="true">&gt;</span>
-              </a>
-            </li>
-            <!-- 마지막 페이지 버튼 -->
-            <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
-              <a class="page-link" th:href="@{/partner/product/list(page=${paging.totalPages - 1})}" aria-label="Next">
+                <span aria-hidden="true">></span>
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
-            <!-- /마지막 페이지 버튼 -->
-
             <!-- /마지막 버튼 -->
           </ul>
         </nav>
@@ -160,37 +146,37 @@
   <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
 
   <script>
-    // 각 가격에 대해 값을 가져오는 함수
-    const sellingPriceElements = document.querySelectorAll(".sellingPrice");
-    const discountRateElements = document.querySelectorAll(".discountRate");
-    const discountPriceElements = document.querySelectorAll(".discountPrice");
-    const marginElements = document.querySelectorAll(".margin");
-    const marginRateElements = document.querySelectorAll(".marginRate");
+    // // 각 가격에 대해 값을 가져오는 함수
+    // const sellingPriceElements = document.querySelectorAll(".sellingPrice");
+    // const discountRateElements = document.querySelectorAll(".discountRate");
+    // const discountPriceElements = document.querySelectorAll(".discountPrice");
+    // const marginElements = document.querySelectorAll(".margin");
+    // const marginRateElements = document.querySelectorAll(".marginRate");
 
-    // 값을 포맷팅하는 함수
-    function formatPrice(price) {
-      return price.toLocaleString();  // 1000단위로 콤마 추가
-    }
+    // // 값을 포맷팅하는 함수
+    // function formatPrice(price) {
+    //   return price.toLocaleString();  // 1000단위로 콤마 추가
+    // }
 
-    // 각 상품에 대해 반복 처리
-    sellingPriceElements.forEach((sellingPriceElement, index) => {
-      const sellingPrice = parseFloat(sellingPriceElement.textContent.trim());
-      let discountRate = parseFloat(discountRateElements[index].textContent.trim());
-      const discountPrice = parseFloat(discountPriceElements[index].textContent.trim());
-      const margin = parseFloat(marginElements[index].textContent.trim());
-      let marginRate = parseFloat(marginRateElements[index].textContent.trim());
+    // // 각 상품에 대해 반복 처리
+    // sellingPriceElements.forEach((sellingPriceElement, index) => {
+    //   const sellingPrice = parseFloat(sellingPriceElement.textContent.trim());
+    //   let discountRate = parseFloat(discountRateElements[index].textContent.trim());
+    //   const discountPrice = parseFloat(discountPriceElements[index].textContent.trim());
+    //   const margin = parseFloat(marginElements[index].textContent.trim());
+    //   let marginRate = parseFloat(marginRateElements[index].textContent.trim());
 
-      //할인율을 내림하여 정수로 나타냄
-      discountRate = Math.floor(discountRate);
-      marginRate = Math.floor(marginRate);
+    //   //할인율을 내림하여 정수로 나타냄
+    //   discountRate = Math.floor(discountRate);
+    //   marginRate = Math.floor(marginRate);
 
-      // 포맷팅된 값으로 업데이트
-      sellingPriceElement.textContent = formatPrice(sellingPrice);
-      discountRateElements[index].textContent = discountRate + '%';  // 할인율은 퍼센트 표시
-      discountPriceElements[index].textContent = formatPrice(discountPrice);
-      marginElements[index].textContent = formatPrice(margin);
-      marginRateElements[index].textContent = marginRate+'%'
-    });
+    //   // 포맷팅된 값으로 업데이트
+    //   sellingPriceElement.textContent = formatPrice(sellingPrice);
+    //   discountRateElements[index].textContent = discountRate + '%';  // 할인율은 퍼센트 표시
+    //   discountPriceElements[index].textContent = formatPrice(discountPrice);
+    //   marginElements[index].textContent = formatPrice(margin);
+    //   marginRateElements[index].textContent = marginRate+'%'
+    // });
 
   </script>
   <!-- /JS -->

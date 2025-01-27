@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+
+    <!-- 제목 -->
+    <title>회원 주문 목록</title>
+    <!-- /제목 -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+    <!-- 상단바 -->
+    <header th:replace="~{fragments/customer-navigation :: headerFragments}"></header>
+    <!--  /상단바 -->
+
+    <!--루트 컨테이너-->
+    <div>
+        <!-- 레이아웃 컨테이너 -->
+        <div class="min-vh-100 g-0 pt-5">
+            <div class="d-flex flex-column container w-50 text-center justify-content-center">
+                <div class="text-start mt-4">
+                    <!-- 페이지 알림 -->
+                    <span>Page <span th:text="${currentPage + 1}"></span> of
+                        <span th:text="${totalPages}"></span></span>
+                    <!-- /페이지 알림 -->
+                </div>
+                <div class="row" th:each="checkout : ${checkouts}">
+                    <div class="border rounded mt-2 p-2 fs-5" style="max-height: a">
+                        <div class="row align-content-between mt-2 pb-2 text-center">
+                            <span th:text="${checkout.createdAt}" class="col">(주문날짜)</span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-xxl-6 col-lg-6 col-sm-12 text-center">
+                                <span><img th:src="@{/product-images/{ad}(ad=${checkout.presentProductImage})}"
+                                        style="max-width: 60%; height: auto" /></span>
+                            </div>
+
+                            <div class="col-xxl-6 col-lg-auto" style="white-space: nowrap;">
+
+                                <div class="pt-5 pb-5 text-wrap" th:text="${checkout.productName}">
+                                    (제품명)
+                                </div>
+                                <div>
+                                    <span>총 결제액 :</span>
+                                    <span th:text="${checkout.grandTotalPayment}" id="grandTotalPayment">(총 결제액)</span>
+                                </div>
+                                <div class="mt-5">
+                                    <a class="text-decoration-none text-primary-emphasis"
+                                        th:href="@{'/checkout/details/' + ${checkout.checkoutId}}">주문 상세 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 페이지네이션 -->
+    <nav class="mt-5" aria-label="Page navigation" th:if="${paging.totalElements > 0}">
+        <ul class="pagination justify-content-center pagination-sm">
+            <!-- 1번 페이지 버튼 -->
+            <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/checkout/list(page=0)}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <!-- /1번 페이지 버튼 -->
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/checkout/list(page=${currentPage - 1})}" aria-label="Previous">
+                    <span aria-hidden="true"> &lt; </span>
+                </a>
+            </li>
+            <!-- /이전 버튼 -->
+
+            <!-- 페이지 번호 -->
+            <li class="page-item"
+                th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0,
+                                       currentPage + 3 < paging.totalPages - 1 ? currentPage + 3 : paging.totalPages - 1)}"
+                th:classappend="${pageNum == currentPage} ? 'active' : ''">
+                <a class="page-link" th:href="@{/checkout/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
+            </li>
+            <!-- /페이지 번호 -->
+
+            <!-- 다음 버튼 -->
+            <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/checkout/list(page=${currentPage + 1})}" aria-label="Next">
+                    <span aria-hidden="true"> &gt; </span>
+                </a>
+            </li>
+            <!-- /다음 버튼 -->
+
+            <!-- 마지막 페이지 버튼 -->
+            <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/checkout/list(page=${totalPages - 1})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <!-- /마지막 페이지 버튼 -->
+        </ul>
+    </nav>
+    <!-- /페이지네이션 -->
+
+    <!-- 푸터 -->
+    <div class="col">
+        <footer th:replace="~{/fragments/customer-footer :: footerFragments}"></footer>
+    </div>
+    <!-- /푸터 -->
+    </div>
+</body>
+
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+
+    const grandTotalPaymentElements = document.querySelectorAll("#grandTotalPayment");
+    // 값을 포맷팅하는 함수
+    function formatPrice(grandTotalPayment) {
+        return grandTotalPayment.toLocaleString();  // 1000단위로 콤마 추가
+    }
+    grandTotalPaymentElements.forEach((grandTotalPaymentElement, index) => {
+        const grandTotalPayment = parseFloat(grandTotalPaymentElement.textContent.trim());
+        grandTotalPaymentElement.textContent = formatPrice(grandTotalPayment) + ' 원';
+    });
+</script>
+
+</html>

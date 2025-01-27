@@ -40,7 +40,7 @@ public class CustomerProductViewController {
         return "pages/product/list";
     }
 
-    @GetMapping("/product/detail/{productId}")
+    @GetMapping("/product/details/{productId}")
     public String viewDetail(@PathVariable("productId") Long productId, Model model) {
         //상품 정보 나타내주기 위한 서비스 호출(모델에 넣을 DTO 불러오기)
         ProductDto productDto = productCrudService.getProductDto(productId);
@@ -65,6 +65,6 @@ public class CustomerProductViewController {
         model.addAttribute("shippingFee", productDto.getShippingFee()); //배송비
         model.addAttribute("count", productDto.getCount()); //재고 수량
 
-        return "pages/product/detail";
+        return "pages/product/details";
     }
 }

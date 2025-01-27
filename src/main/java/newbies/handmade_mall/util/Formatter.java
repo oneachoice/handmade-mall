@@ -11,6 +11,14 @@ public class Formatter {
        return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(localDateTime);
     }
 
+    public static String formatForCheckout(){
+        return DateTimeFormatter.ofPattern("yyMMdd").format(LocalDateTime.now());
+    }
+
+    public static String formatForViewCheckout(){
+        return DateTimeFormatter.ofPattern("yy.MM.dd").format(LocalDateTime.now());
+    }
+
 }
 
 

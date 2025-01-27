@@ -40,14 +40,14 @@
                         <!-- 배송지 입력 영역 -->
                         <div class="col-md-4 border p-3">
                             <h3> 배송지 </h3>
-                            <form th:action="@{/join}" th:method="post">
+                            <form th:action="@{/checkout}" th:method="post">
                                 <div class="container p-1">
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3">
                                                 <!-- 이름 인풋 -->
                                                 <label for="name" class="form-label">이름</label>
-                                                <input type="text" class="form-control" id="name" name="name"
+                                                <input type="text" class="form-control" id="name" name="recipientName"
                                                     required />
                                                 <!-- /이름 인풋 -->
                                             </div>
@@ -59,7 +59,7 @@
                                         <div class="col pe-0">
                                             <div class="mb-3">
                                                 <select id="firstPhoneNumber" class="form-select"
-                                                    name="firstPhoneNumber">
+                                                    name="firstPhoneNumber" required>
                                                     <option selected>010</option>
                                                     <option>011</option>
                                                     <option>016</option>
@@ -74,7 +74,7 @@
                                         </div>
                                         <div class="col p-0">
                                             <input type="text" class="form-control" maxlength="4" id="middlePhoneNumber"
-                                                name="middlePhoneNumber">
+                                                name="middlePhoneNumber" required>
                                         </div>
                                         <div class="col-1 p-1 me-1" style="width: 10px;">
                                             <span>-</span>
@@ -83,7 +83,7 @@
                                         <div class="col mb-3 ps-0">
                                             <div class="mb-3">
                                                 <input type="text" class="form-control" maxlength="4"
-                                                    id="lastPhoneNumber" name="lastPhoneNumber">
+                                                    id="lastPhoneNumber" name="lastPhoneNumber" required>
                                             </div>
                                         </div>
                                     </div>
@@ -91,46 +91,51 @@
                                     <!-- 주소 입력 영역 -->
                                     <div class="row">
                                         <div class="col">
-                                            <label for="addressButton" class="form-label">주소</label>
+                                            <label class="form-label">주소</label>
                                             <div class="input-group mb-3">
                                                 <input type="text" class="form-control" id="sample4_postcode"
-                                                    placeholder="우편번호">
+                                                    placeholder="우편번호" name="postCode">
                                                 <input type="button" class="btn btn-secondary"
                                                     onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
                                             </div>
                                             <div class="mb-1">
                                                 <input type="text" id="sample4_roadAddress" class="form-control  mb-1 "
-                                                    placeholder="도로명주소">
+                                                    placeholder="도로명주소" name="roadAddress" required>
                                                 <span id="guide" style="color:#999;display:none"></span>
                                                 <input type="text" id="sample4_detailAddress"
-                                                    class="form-control  mt-3 " placeholder="상세주소">
+                                                    class="form-control  mt-3 " placeholder="상세주소" name="detailAddress">
                                             </div>
-
                                         </div>
                                     </div>
                                     <!-- /주소 입력 영역 -->
-                            </form>
-                            <!-- 배송지 입력 영역 -->
+                                    <!-- 상품 hidden input -->
+                                    <input type="hidden" th:value="${productId}" name="productId">
+                                    <input type="hidden" th:value="${count}" name="count">
+                                    <!-- /상품 hidden input -->
+
+                                    <!-- 배송지 입력 영역 -->
+                                </div>
                         </div>
-                    </div>
-                    <!-- 구매 상품 영역 -->
-                    <div class="col-md-7">
-                        <div class="border p-3">
-                            <h3>구매 상품</h3>
-                            <!-- 카드 영역 -->
+                        <!-- 구매 상품 영역 -->
+                        <div class="col-md-7">
+                            <div class="border p-3">
+                                <h3>구매 상품</h3>
+                                <!-- 카드 영역 -->
                                 <div class="card d-flex justify-content-between" style=" border: none;">
                                     <div class="row">
+                                        <!-- 카드 이미지 -->
                                         <div class="col-md-4">
-                                            <img src="https://cafe24.poxo.com/ec01/damayo9899/UVTjSep0dwP4/wX7AtHyXLOTvKG6to4DnnvBLexj8sqwoOy7SALYF2wihGgrfUedWwknBVMhY0GgKiVcB60BYA==/_/web/product/big/202012/10dc940e6eaced49cdcc74262bc187dc.jpg"
-                                                class="img-fluid rounded-start" alt="...">
+                                            <img th:src="@{${mainImagePath}}" class="img-fluid rounded-start" alt="...">
                                         </div>
+                                        <!-- /카드 이미지 -->
+                                        <!-- 카드 바디 -->
                                         <div class="col-md-8">
-                                            <div class="card-body">
+                                            <div class="card-body h-100" style=" align-content: center;">
                                                 <!-- 상품명 -->
                                                 <div class="row mb-2">
                                                     <div class="col">
                                                         <span>상품명 :</span>
-                                                        <span>상품명</span>
+                                                        <span th:text="${productName}"></span>
                                                     </div>
                                                 </div>
                                                 <!-- /상품명 -->
@@ -138,7 +143,7 @@
                                                 <div class="row mb-4">
                                                     <div class="col">
                                                         <span>개수 :</span>
-                                                        <span>3개</span>
+                                                        <span th:text="${count}"></span>
                                                     </div>
                                                 </div>
                                                 <!-- /개수 -->
@@ -146,7 +151,8 @@
                                                 <div class="row mb-2">
                                                     <div class="col d-flex" style="justify-content: space-between;">
                                                         <span>할인가 : </span>
-                                                        <span>쌈마넌</span>
+                                                        <span class="discountedPrice"
+                                                            th:text="${discountedPrice}"></span>
                                                     </div>
                                                 </div>
                                                 <!-- /할인가 -->
@@ -154,12 +160,14 @@
                                                 <div class="row">
                                                     <div class="col d-flex" style="justify-content: space-between;">
                                                         <span>총합 : </span>
-                                                        <span>오마넌</span>
+                                                        <span class="totalDiscountedPrice"
+                                                            th:text="${totalDiscountedPrice}"></span>
                                                     </div>
                                                 </div>
                                                 <!-- /총합 -->
                                             </div>
                                         </div>
+                                        <!-- /카드 바디 -->
                                     </div>
                                 </div>
                             </div>
@@ -170,40 +178,43 @@
                 </div>
                 <!-- /배송지 및 구매 상품 영역 -->
                 <!-- 주문 내용 영역 -->
-                <div class="row border p-3">
+                <div class="container border p-3">
                     <h3>주문 내용</h3>
                     <div class="row justify-content-end">
                         <div class="col-md-4 d-flex" style="justify-content: space-between;">
-                            <span>정가 : </span>
-                            <span>오마넌</span>
+                            <span>총 판매가 : </span>
+                            <span class="totalSellingPrice" th:text="${totalSellingPrice}"></span>
                         </div>
                     </div>
                     <div class="row justify-content-end">
                         <div class="col-md-4 d-flex" style="justify-content: space-between;">
-                            <span>정가 : </span>
-                            <span>오마넌</span>
+                            <span>총 할인금액 : </span>
+                            <span class="totalDiscount" th:text="${totalDiscount}"></span>
                         </div>
                     </div>
                     <div class="row justify-content-end mb-4">
                         <div class="col-md-4 d-flex" style="justify-content: space-between;">
-                            <span>정가 : </span>
-                            <span>오천마넌</span>
+                            <span>배송비 : </span>
+                            <span class="shippingFee" th:text="${shippingFee}"></span>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <h3 class="text-end">최종 결제 가격</h3>
-                        <h4 class="text-end">오마넌</h4>
+                        <h4 class="text-end totalPrice" th:text="${totalPrice}"></h4>
                     </div>
                 </div>
                 <!-- /주문 내용 영역 -->
                 <!-- 버튼 -->
-                <div class="row mt-4" style="white-space: nowrap;">
-                    <div class="col-md-10"></div>
-                    <div class="col-md-2 text-right">
-                        <button type="button" class="btn btn-secondary me-4">취소</button>
-                        <button type="button" class="btn btn-success">주문하기</button>
+                <div class="container">
+                    <div class="row mt-4" style="white-space: nowrap;">
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2 text-right">
+                            <button type="button" class="btn btn-secondary me-4">취소</button>
+                            <button type="submit" class="btn btn-success">주문하기</button>
+                        </div>
                     </div>
                 </div>
+                </form>
                 <!-- /버튼 -->
             </main>
             <!-- /메인 컨테이너 -->
@@ -275,6 +286,25 @@
         }
     </script>
     <!-- /카카오주소api -->
+    <script>
+
+        // 가격을 1000단위로 콤마 찍고 소수점 없애는 함수
+        function formatPrice(price) {
+            return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+        }
+
+
+        const priceElements = document.querySelectorAll('.discountedPrice, .totalSellingPrice, .totalDiscountedPrice, .totalDiscount, .shippingFee, .totalPrice');
+
+        priceElements.forEach(function (element) {
+            let price = parseFloat(element.innerText.replace(/[^0-9.-]+/g, "")); // 숫자만 추출
+            if (!isNaN(price)) {
+                element.innerText = formatPrice(price); // 형식 변경
+            }
+        });
+
+
+    </script>
 </body>
 <!-- 바디 -->
 

@@ -30,12 +30,19 @@
 
                         <span th:text="${discountRate}" class="fs-3 text-danger" id="discountRate"></span>
                         <span th:text="${discountedPrice}" class="fs-3 p-4" id="discountedPrice"></span>
+                        <span th:if="${count}<1" class="ms-5 text-white" style="background-color: red;" id="soldOut">품절</span>
+
 
                         <!-- 수량 입력 -->
+                         <form th:action="@{/checkout/create}" th:method="post">
                         <div class="p-3 col-6 container">
                             <label for="count"></label>
-                            <input type="number" id="count" min="0" class="form-control" placeholder="수량을 입력해주세요."/>
+                            <input required type="number" name="count" id="count" min="0" class="form-control" placeholder="수량을 입력해주세요."/>
+                            <input type="hidden" name="productId" th:value="${productId}">
                           </div>
+                         <form>
+
+                          <!-- /수량 입력 -->
                         <!-- 총 가격 -->
                         <div class="fs-3">
                             총 상품 금액: <span id="totalPrice">0원</span>
@@ -43,7 +50,7 @@
 
                         <div>배송비 : <span th:text="${shippingFee}" class="p-4" id="shippingFee"></span></div>
                         <div class="d-grid gap-2 col-8 mx-auto position-relative py-5">
-                            <button type="submit" class="btn btn-danger btn-lg">
+                            <button type="submit" id="buyButton" class="btn btn-danger btn-lg">
                                 구매하기
                             </button>
                         </div>
@@ -151,6 +158,21 @@
         // 총 가격 표시
         totalPriceElement.textContent = totalPrice.toLocaleString() + "원";
     });
+
+
+    //품절 시 주문 X
+
+    const soldOut = document.getElementById("soldOut");
+    const buyButton = document.querySelector("#buyButton")
+
+    if(soldOut){
+        buyButton.addEventListener("click",function(){
+            alert("품절되었습니다. 다른 상품을 주문하여 주십시오.");
+            buyButton.type = "button";
+        })
+    }
+
+
 </script>
 
 </html>

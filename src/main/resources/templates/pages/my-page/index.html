@@ -3,70 +3,75 @@
 <!-- 헤드 -->
 
 <head>
-  <!-- 메타데이터 -->
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <!-- 메타데이터 -->
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <!-- 메타데이터 -->
 
-  <!-- 제목 -->
-  <title>마이페이지</title>
-  <!-- /제목 -->
+    <!-- 제목 -->
+    <title>마이페이지</title>
+    <!-- /제목 -->
 
-  <!-- CSS -->
-  <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
-  <!-- /CSS -->
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}"/>
+    <!-- /CSS -->
 </head>
 <!-- /헤드 -->
 
 <!-- 바디 -->
 
 <body>
-  <!--루트 컨테이너-->
-  <div>
+<!--루트 컨테이너-->
+<div>
     <!-- 레이아웃 컨테이너 -->
     <div class="row min-vh-100 g-0">
-      <!-- 상단바 -->
-      <header th:replace="~{/fragments/customer-navigation :: headerFragments}"></header>
-      <!--  /상단바 -->
+        <!-- 상단바 -->
+        <header th:replace="~{/fragments/customer-navigation :: headerFragments}"></header>
+        <!--  /상단바 -->
 
-      <!-- 메인 컨테이너 -->
-      <main>
-        <!-- 제목 컨테이너 -->
-        <div class="container p-5 text-center">
-          <!-- 제목 -->
-          <h1>마이 페이지</h1>
+        <!--오류 메세지-->
+        <div th:if="${not #strings.isEmpty(errorMessage)}" class="alert alert-danger d-flex align-items-center"
+             role="alert">
+            <div th:text="${errorMessage}"></div>
         </div>
-        <!-- /제목 컨테이너 -->
-        <!-- 버튼 영역 -->
-        <div class="row justify-content-center">
-          <div class="d-grid gap-5 col-5 mx-auto vh-100">
-            <a th:href="@{/checkout/list}"
-              class="btn btn-secondary h-30 fs-2" style="align-content: center;">
-              주문 목록
-            </a>
-            <a th:href="@{/my-page/account/update}"
-              class="btn btn-secondary h-30 fs-2" style="align-content: center;">
-              회원 정보 수정
-            </a>
-            <a th:href="@{/my-page/account/cancel}"
-              class="btn btn-secondary h-30 fs-2" style="align-content: center;">
-              회원 탈퇴
-            </a>
-          </div>
+        <!-- 메인 컨테이너 -->
+        <main>
+            <!-- 제목 컨테이너 -->
+            <div class="container p-5 text-center">
+                <!-- 제목 -->
+                <h1>마이 페이지</h1>
+            </div>
+            <!-- /제목 컨테이너 -->
+            <!-- 버튼 영역 -->
+            <div class="row justify-content-center">
+                <div class="d-grid gap-5 col-5 mx-auto vh-100">
+                    <a th:href="@{/checkout/list}"
+                       class="btn btn-secondary h-30 fs-2" style="align-content: center;">
+                        주문 목록
+                    </a>
+                    <a th:href="@{/my-page/account/update}"
+                       class="btn btn-secondary h-30 fs-2" style="align-content: center;">
+                        회원 정보 수정
+                    </a>
+                    <a th:href="@{/my-page/account/cancel}"
+                       class="btn btn-secondary h-30 fs-2" style="align-content: center;">
+                        회원 탈퇴
+                    </a>
+                </div>
+            </div>
+            <!-- /버튼 영역-->
+
+        </main>
+        <!-- /메인 컨테이너 -->
+        <!-- 푸터 -->
+        <div class="container">
+            <footer th:replace="~{/fragments/customer-footer :: footerFragments}"></footer>
+            <!-- /푸터 -->
+
         </div>
-        <!-- /버튼 영역-->
-
-      </main>
-      <!-- /메인 컨테이너 -->
-      <!-- 푸터 -->
-      <div class="container">
-        <footer th:replace="~{/fragments/customer-footer :: footerFragments}"></footer>
-        <!-- /푸터 -->
-
-      </div>
-      <!-- /레이아웃 컨테이너 -->
+        <!-- /레이아웃 컨테이너 -->
 
 
     </div>

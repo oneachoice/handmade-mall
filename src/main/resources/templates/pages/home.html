@@ -83,7 +83,10 @@
                 <div class="container mt-5">
                     <div th:each="product : ${product}" class="card me-4 mb-5 d-inline-block" style="width: 18rem;">
                         <!-- 상품 이미지 -->
+                        <a th:href="@{/customer/product/details/{productId} (productId=${product.productId})}"
+                        class="text-black text-decoration-none">
                         <img th:src="${product.mainImagePath}" class="card-img-top" style="height : 18rem;">
+                        </a>
                         <!-- /상품 이미지 -->
                         <div class="card-body" style="height : 9rem">
                             <!-- 상품 이름 -->
@@ -98,6 +101,7 @@
                                 <span th:text="${product.sellingPrice}"
                                     class="sellingPrice text-decoration-line-through"></span>
                                 <b><span th:text="${product.discountRate}" class="discountRate text-danger"></span></b>
+                                <span th:if="${product.count}<1" class="ms-5 text-white" style="background-color: red;">품절</span>
                                 <b>
                                     <p th:text="${product.discountPrice}" class="discountPrice fs-4"></p>
                                 </b>

@@ -27,7 +27,7 @@ public class ProductImage extends BaseTime {
     private Long id;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     @Comment("상품 외래키")
     private Product product;

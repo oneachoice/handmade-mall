@@ -44,7 +44,7 @@
             <div class="row justify-content-start">
                 <div class="col-3" th:each="productlist : ${paging.content}">
                     <div class="card mb-3" style="width: 18rem">
-                        <a th:href="@{/customer/product/detail/{productId} (productId=${productlist.productId})}"
+                        <a th:href="@{/customer/product/details/{productId} (productId=${productlist.productId})}"
                            class="text-black text-decoration-none">
                             <img th:src="${productlist.mainImagePath}" class="card-img-top" alt="상품 대표 이미지"
                                  style="height:18rem;"/>
@@ -109,7 +109,7 @@
 
         <!-- 마지막 페이지 버튼 -->
         <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
-            <a class="page-link" th:href="@{/customer/product/list(page=${paging.totalElements / 20 - 1})}"
+            <a class="page-link" th:href="@{/customer/product/list(page=${paging.totalPages - 1 })}"
                aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>

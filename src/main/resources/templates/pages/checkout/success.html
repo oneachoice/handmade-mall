@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- 헤드 -->
+<head>
+    <!-- 메타데이터 -->
+    <meta charset="UTF-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- 메타데이터 -->
+    <!-- 제목 -->
+    <title>주문완료 모달</title>
+    <!-- /제목 -->
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+    <!-- /CSS -->
+</head>
+<!-- /헤드 -->
+<!-- 상단바 -->
+<header th:replace="~{/fragments/customer-navigation :: headerFragments}"></header>
+<!--  /상단바 -->
+
+<main class="col">
+        <div class="container border-1 mt-5">
+            <div class="d-flex flex-wrap align-items-center justify-content-center text-xxl-center">
+                <div class="mx-auto mt-5 border rounded p-5 fs-3">
+                    <span th:text="${checkoutDate}"></span><br>
+                    <span>주문하신</span>
+                    <span th:text="${productName}"></span>
+                    <span>상품이 주문완료 되었습니다.</span><br>
+                    <span>주문번호는</span>
+                    <span th:text="${checkoutCode}"></span>
+                    <span>입니다.</span>
+                    <div class="align-items-center justify-content-center p-3">
+                        <button type="button" onclick="location.href='/customer/product/list'" class="btn btn-outline-primary">계속 쇼핑하기</button>
+                        <button type="button" onclick="location.href='/checkout/list'" class="btn btn-outline-primary">주문 목록 보기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</main>
+<!-- /메인 컨테이너 -->
+</html>

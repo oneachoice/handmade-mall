@@ -83,5 +83,4 @@ public class ProductMapper {
                       .category(productCategory)
                       .build();
     }
-
 }
