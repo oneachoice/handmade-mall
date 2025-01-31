@@ -19,9 +19,6 @@ public class HomeController {
 
     private final ProductManagementService productManagementService;
 
-
-
-
     /**
      * 홈 화면 생성
      */

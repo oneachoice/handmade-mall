@@ -41,5 +41,8 @@ public class CustomerDto {
      */
     private String email;
 
+    /**
+     * 고객 휴대전화번호
+     */
     private String phoneNumber;
 }
