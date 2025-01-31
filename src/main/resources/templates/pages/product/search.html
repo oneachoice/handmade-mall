@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 -->
+
+<head>
+  <!-- 메타데이터 -->
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!-- 메타데이터 -->
+
+  <!-- 제목 -->
+  <title>홈</title>
+  <!-- /제목 -->
+
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
+  <!-- /CSS -->
+
+  <!-- 스타일 -->
+  <style>
+    #topButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+  </style>
+  <!-- /스타일 -->
+</head>
+<!-- /헤드 -->
+
+<!-- 바디 -->
+
+<body>
+  <!--루트 컨테이너-->
+  <div>
+    <!-- 레이아웃 컨테이너 -->
+    <div>
+      <!-- 상단바 -->
+      <header th:replace="~{/fragments/customer-navigation :: headerFragments}"></header>
+      <!--  /상단바 -->
+        
+          <!-- 그리드 레이아웃 -->
+        <div class="container p-5">
+          <!-- 현재 페이지의 제품의 수량 알림 -->
+
+        <div th:unless="${products.totalElements == 0}" class="ps-3 mb-4 ">
+          <span th:text="${products.totalElements + '건 중'}"></span>
+          <span
+                  th:text="${(products.number + 1) + (products.number * 20) - products.totalPages + (products.totalPages - products.number)}"></span>
+          - <span th:text="${(products.number * 20) + #lists.size(products.content) + '건'}"></span>
+      </div>
+
+      <!-- 현재 페이지의 제품의 수량 알림 -->
+
+      <div class="position-absolute top-50 start-50" th:if="${products.totalElements == 0}">등록된 상품이 없습니다.</div>
+          <!-- 카드 -->
+          <div class="row justify-content-start">
+              <div class="col-3" th:each="product : ${products}">
+                  <div class="card mb-3" style="width: 18rem">
+                      <a th:href="@{/customer/product/details/{id} (id=${product.productId})}"
+                         class="text-black text-decoration-none">
+                          <img th:src="${product.mainImagePath}" class="card-img-top" alt="상품 대표 이미지"
+                               style="height:18rem;"/>
+                              
+                          <div class="card-body">
+                              <p class="card-text">
+                              <p th:text="${product.productName}" class="text-decoration-none"
+                                 style="height:50px;"></p>
+                              <p th:text="${product.sellingPrice + ' 원'}" id="sellingPrice"
+                                 class="text-decoration-line-through text-secondary"></p>
+                              <span th:text="${product.discountRate + '%'}" id="discountRate" class="fw-semibold"
+                                    style="color: #ff0000;"></span>
+                              <span th:text="${product.discountPrice + ' 원'}" id="discountPrice" class="fw-semibold"></span>
+                              </p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+          <!-- /카드 -->
+
+      </div>
+      <!-- /그리드 레이아웃 -->
+        
+      <nav class="mt-5" aria-label="Page navigation" th:if="${products.totalElements > 0}">
+        <ul class="pagination justify-content-center pagination-sm">
+            <!-- 처음 버튼 -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/search(page=0,search=${searchQuery})}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+    
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${products.hasPrevious()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/search(page=${currentPage - 1},search=${searchQuery})}" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+    
+            <!-- 페이지 번호 -->
+            <li class="page-item"
+                th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0, currentPage + 3 <  totalPages - 1 ? currentPage + 3 : totalPages - 1)}"
+                th:classappend="${pageNum == currentPage} ? 'active' : ''">
+                <a class="page-link" th:href="@{/search(page=${pageNum},search=${searchQuery})}" th:text="${pageNum + 1}"></a>
+            </li>
+    
+            <!-- 다음 버튼 -->
+            <li class="page-item" th:classappend="${products.hasNext()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/search(page=${currentPage + 1},search=${searchQuery})}" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+    
+            <!-- 마지막 버튼 -->
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/search(page=${totalPages - 1},search=${searchQuery})}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+        
+        </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Top버튼 -->
+<div>
+  <button class="btn btn-secondary " type="button" id="topButton"> Top</button>
+</div>
+<!-- /Top버튼 -->
+
+</body>
+
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+
+  //top버튼
+  const topButton = document.getElementById("topButton");
+
+  // Top 버튼 클릭 시 상단으로 스크롤
+  topButton.addEventListener('click', function () {
+      window.scrollTo({
+          top: 0
+      });
+  });
+
+  // 공통 함수: 소수점 제거 및 천 단위 구분
+  function formatAndUpdatePrices(selector, suffix) {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+      const value = parseFloat(element.textContent.replace(/[^0-9.]/g, "")) || 0; // 숫자 추출
+      const formattedValue = Math.floor(value).toLocaleString(); // 소수점 제거 및 포맷
+      element.textContent = formattedValue + suffix; // 값 업데이트
+    });
+  }
+
+
+  formatAndUpdatePrices("#sellingPrice", "원");
+  formatAndUpdatePrices("#discountPrice", "원");
+  formatAndUpdatePrices("#discountRate", "%");
+  </script>
+
+</html>

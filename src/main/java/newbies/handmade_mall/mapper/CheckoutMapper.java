@@ -1,35 +1,53 @@
 package newbies.handmade_mall.mapper;
 
 import lombok.RequiredArgsConstructor;
-import newbies.handmade_mall.common.CheckoutProductState;
+import newbies.handmade_mall.common.ProductImageManager;
 import newbies.handmade_mall.dto.req.CheckoutDto;
+import newbies.handmade_mall.dto.res.SearchListDto;
 import newbies.handmade_mall.entity.Checkout;
 import newbies.handmade_mall.entity.Customer;
 import newbies.handmade_mall.entity.Product;
-import newbies.handmade_mall.service.CustomerCrudService;
-import newbies.handmade_mall.service.ProductCrudService;
+import newbies.handmade_mall.entity.ProductImage;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Component
 @RequiredArgsConstructor
 public class CheckoutMapper {
 
-    private final CustomerCrudService customerCrudService;
+    private final ProductImageManager productImageManager;
 
-    private final ProductCrudService productCrudService;
+    /**
+     * @return 상풍명 기준으로 상품 검색 , 페이지네이션 포함
+     */
+    public SearchListDto toSearchListDto(Product product) {
+
+        ProductImage productMainImage = product.getProductImage();
+
+        String productMainImagePath = null;
+
+        // 이미지가 존재하지 않으면 이미지 추가 안함
+        if (productMainImage != null) {
+            productMainImagePath = productImageManager.createImageUrl(productMainImage.getImageFullName());
+        }
+
+        return SearchListDto.builder()
+                            .productId(product.getId())
+                            .productName(product.getProductName())
+                            .sellingPrice(product.getSellingPrice())
+                            .discountPrice(product.getDiscountPrice())
+                            .discountRate(product.getDiscountRate())
+                            .mainImagePath(productMainImagePath)
+                            .build();
+    }
+
     /**
      * checkout 엔티티 생성
      */
-    public Checkout toCheckoutEntity(CheckoutDto checkoutDto) {
+    public Checkout toCheckoutEntity(Customer customer, CheckoutDto checkoutDto,Product product) {
 
-        //세션 정보
-        Customer customer = customerCrudService.getCustomer();
-
-        if (customer == null) throw new RuntimeException("로그인 되지 않음");
-
-        Product product = productCrudService.getProduct(checkoutDto.getProductId());
 
         //배송 주소(도로명주소 + 상세주소 + (우편주소))
         String shippingAddress = checkoutDto.getRoadAddress() + " " + checkoutDto.getDetailAddress() + "(" + checkoutDto.getPostCode() + ")";
@@ -51,25 +69,14 @@ public class CheckoutMapper {
                        .customer(customer)
                        .shippingAddress(shippingAddress)
                        .recipient(checkoutDto.getRecipientName())
-                       .grandTotalSellingPrice(grandTotalSellingPrice)
-                       .grandTotalDiscountedPrice(grandTotalDiscountedPrice)
-                       .grandTotalShippingFee(product.getShippingFee())
-                       .grandTotalPayment(grandTotalPayment)
+                       .grandTotalSellingPrice(grandTotalSellingPrice.setScale(0, RoundingMode.FLOOR))
+                       .grandTotalDiscountedPrice(grandTotalDiscountedPrice.setScale(0,RoundingMode.FLOOR))
+                       .grandTotalShippingFee(product.getShippingFee().setScale(0,RoundingMode.FLOOR))
+                       .grandTotalPayment(grandTotalPayment.setScale(0,RoundingMode.FLOOR))
                        .build();
     }
 
-    /**
-     * 주문 상태 ENUM -> String 으로 변경
-     */
-    public String getCheckoutState(CheckoutProductState checkoutProductState){
-       String statement = "";
-        switch (checkoutProductState){
-            case CANCEL -> statement = "주문취소";
-            case WAIT -> statement = "주문완료";
-            case CONFIRM -> statement = "주문확인";
-        }
-    return statement;
-    }
+
 
 
 }

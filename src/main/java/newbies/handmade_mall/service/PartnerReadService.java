@@ -16,4 +16,5 @@ public class PartnerReadService {
     public Partner getByAccountId(String accountId) {
         return partnerRepository.findByAccountId(accountId).orElse(null);
     }
+
 }

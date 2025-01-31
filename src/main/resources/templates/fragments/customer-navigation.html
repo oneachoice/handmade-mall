@@ -42,12 +42,12 @@
                             카테고리
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">과일청</a></li>
-                            <li><a class="dropdown-item" href="#">선물용</a></li>
+                            <li><a class="dropdown-item" href="/customer/product/list/general">과일청</a></li>
+                            <li><a class="dropdown-item" href="/customer/product/list/gift">선물용</a></li>
                         </ul>
                     </li>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex" role="search" method="get" action="/search">
+                        <input class="form-control me-2" autocomplete="off" name="search" type="search" placeholder="상품명을 입력해주세요" aria-label="Search">
                         <button class="btn btn-outline-dark" type="submit">Search</button>
                     </form>
                 </ul>

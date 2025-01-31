@@ -11,6 +11,8 @@ import newbies.handmade_mall.entity.ProductImage;
 import newbies.handmade_mall.util.Formatter;
 import org.springframework.stereotype.Component;
 
+import java.math.RoundingMode;
+
 @Component
 @RequiredArgsConstructor
 public class ProductMapper {
@@ -37,13 +39,13 @@ public class ProductMapper {
                                  .count(product.getCount())
                                  .category(product.getCategory().toString())
                                  .createdAt(Formatter.format(product.getCreatedAt()))
-                                 .discountRate(product.getDiscountRate())
-                                 .discountPrice(product.getDiscountPrice())
+                                 .discountRate(product.getDiscountRate().setScale(0,RoundingMode.FLOOR)) // 소수점이하 절사
+                                 .discountPrice(product.getDiscountPrice().setScale(0, RoundingMode.FLOOR))
                                  .mainImagePath(productMainImagePath)
                                  .productName(product.getProductName())
-                                 .margin(product.getMargin())
-                                 .marginRate(product.getMarginRate())
-                                 .sellingPrice(product.getSellingPrice())
+                                 .margin(product.getMargin().setScale(0, RoundingMode.FLOOR))
+                                 .marginRate(product.getMarginRate().setScale(0, RoundingMode.FLOOR))
+                                 .sellingPrice(product.getSellingPrice().setScale(0, RoundingMode.FLOOR))
                                  .build();
     }
 
@@ -52,13 +54,13 @@ public class ProductMapper {
         return ProductDto.builder()
                          .productId(product.getId())
                          .productName(product.getProductName())
-                         .sellingPrice(product.getSellingPrice())
-                         .costPrice(product.getCostPrice())
-                         .discountedPrice(product.getDiscountPrice())
-                         .discountRate(product.getDiscountRate())
-                         .margin(product.getMargin())
-                         .marginRate(product.getMarginRate())
-                         .shippingFee(product.getShippingFee())
+                         .sellingPrice(product.getSellingPrice().setScale(0, RoundingMode.FLOOR))
+                         .costPrice(product.getCostPrice().setScale(0, RoundingMode.FLOOR))
+                         .discountedPrice(product.getDiscountPrice().setScale(0, RoundingMode.FLOOR))
+                         .discountRate(product.getDiscountRate().setScale(0, RoundingMode.FLOOR))
+                         .margin(product.getMargin().setScale(0, RoundingMode.FLOOR))
+                         .marginRate(product.getMarginRate().setScale(0, RoundingMode.FLOOR))
+                         .shippingFee(product.getShippingFee().setScale(0, RoundingMode.FLOOR))
                          .category(String.valueOf(product.getCategory()))
                          .count(product.getCount())
                          .build();

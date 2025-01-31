@@ -52,12 +52,12 @@
                                 <p class="card-text">
                                 <p th:text="${productlist.productName}" class="text-decoration-none"
                                    style="height:50px;"></p>
-                                <p th:text="${productlist.sellingPrice + ' 원'}" id="sellingPrice"
-                                   class="text-decoration-line-through text-secondary"></p>
+                                <span th:text="${productlist.sellingPrice + ' 원'}" id="sellingPrice"
+                                   class="text-decoration-line-through text-secondary"></span>
                                 <span th:text="${productlist.discountRate + '%'}" id="discountRate" class="fw-semibold"
                                       style="color: #ff0000;"></span>
-                                <span th:text="${productlist.discountPrice + ' 원'}" id="discountPrice" class="fw-semibold"></span>
-                                </p>
+                                <span th:if="${productlist.count}<1" class="ms-5 text-white" style="background-color: red;">품절</span>
+                                <p th:text="${productlist.discountPrice + ' 원'}" id="discountPrice" class="fw-semibold fs-5"></p>
                             </div>
                         </a>
                     </div>

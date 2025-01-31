@@ -33,16 +33,15 @@
           파트너 네비게이션
         </nav>
       </div>
-      <!-- /네이게이션 컨테이너 -->
+      <!-- /네비게이션 컨테이너 -->
 
       <!-- 메인 컨테이너 -->
       <main class="col-9 col-sm-10">
         <!-- 상품 리스트 테이블 컨테이너-->
         <div class="container p-5">
-          <h3>등록된 상품 리스트</h3>
+          <h3>등록된 주문 리스트</h3>
           <br />
-
-          <h4 th:text="${'등록된 주문의 수: '+ paging.totalElements}"></h4>
+          <h4 th:text="${'총 주문 수: '+ paging.totalElements}"></h4>
           <!-- 단위 금액 관련-->
           <div class="container">
             <div class="row justify-content-end">
@@ -53,8 +52,8 @@
           <table class="table table-bordered table-hover text-center">
             <thead>
               <tr>
-                <th scope="col">주문 코드</th>
-                <th scope="col">상품 이미지</th>
+                <th scope="col">주문번호</th>
+                <th scope="col">이미지</th>
                 <th style="width:140px;" scope="col">상품명</th>
                 <th scope="col">주문자ID</th>
                 <th scope="col">주문날짜</th>
@@ -67,27 +66,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr th:each="productlist : ${paging.content}" style="vertical-align: middle;">
-                <th scope="row" th:text="${productlist.productCode}"></th>
+              <tr th:each="checkoutlist : ${checkouts}" style="vertical-align: middle;">
+                <td th:text="${checkoutlist.checkoutCode}"></td>
                 <td>
-                  <a th:href="@{/product/details/{productId} (productId=${productlist.productId})}">
-
-                    <img th:src="${productlist.mainImagePath}" width="100px" height="100px" alt="Product Image" />
-                  </a>
+                    <img th:src="${checkoutlist.presentProductImage}" width="100px" height="100px" alt="Product Image" />
                 </td>
-                <td th:text="${productlist.category}"></td>
-                <td>
-                  <a th:href="@{update/{productId} (productId=${productlist.productId})}">
-                    <span th:text="${productlist.productName}"></span>
-                  </a>
-                </td>
-                <td class="sellingPrice" th:text="${productlist.sellingPrice}"></td>
-                <td class="discountPrice" th:text="${productlist.discountPrice}"></td>
-                <td class="discountRate" th:text="${productlist.discountRate}"></td>
-                <td th:text="${productlist.count}"></td>
-                <td class="margin" th:text="${productlist.margin}"></td>
-                <td class="marginRate" th:text="${productlist.marginRate}"></td>
-                <td th:text="${productlist.createdAt}"></td>
+                <td th:text="${checkoutlist.productName}" ></td>
+                <td th:text="${checkoutlist.customerId}" ></td>
+                <td th:text="${checkoutlist.createdAt}"></td>
+                <td th:text="${checkoutlist.count}"></td>
+                <td class="grandTotalPayment" th:text="${checkoutlist.grandTotalPayment}"></td>
+                <td class="shippingFee" th:text="${checkoutlist.shippingFee}"></td>
+                <td class="margin" th:text="${checkoutlist.margin}"></td>
+                <td class="marginRate" th:text="${checkoutlist.marginRate}"></td>
+                <td th:text="${checkoutlist.checkoutProductState}"></td>
               </tr>
             </tbody>
           </table>
@@ -95,44 +87,52 @@
         <!-- /상품 리스트 테이블 컨테이너-->
         <div class="position-absolute top-50 start-50" th:if="${paging.totalElements == 0}">등록된 상품이 없습니다.</div>
 
-        <!-- 페이지네이션 -->
-        <nav aria-label="Page navigation" th:if="${paging.totalElements > 5}">
-          <ul class="pagination justify-content-center pagination-sm">
-            <!-- 1번 페이지 버튼 -->
-            <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
-              <a class="page-link" th:href="@{/partner/product/list(page=0)}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
+         <!-- 페이지네이션 -->
+    <nav class="mt-5" aria-label="Page navigation" th:if="${paging.totalElements > 0}">
+      <ul class="pagination justify-content-center pagination-sm">
+          <!-- 1번 페이지 버튼 -->
+          <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
+              <a class="page-link" th:href="@{/partner/checkout/list(page=0)}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
               </a>
-            </li>
-            <!-- /1번 페이지 버튼 -->
-            <!-- 이전 버튼 -->
-            <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
-              <a class="page-link" th:href="@{/partner/product/list(page=${currentPage - 1})}" aria-label="Previous">
-                <span aria-hidden="true"> &lt; </span>
+          </li>
+          <!-- /1번 페이지 버튼 -->
+          <!-- 이전 버튼 -->
+          <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
+              <a class="page-link" th:href="@{/partner/checkout/list(page=${currentPage - 1})}" aria-label="Previous">
+                  <span aria-hidden="true"> &lt; </span>
               </a>
-            </li>
-            <!-- /이전 버튼 -->
+          </li>
+          <!-- /이전 버튼 -->
 
-            <!-- 페이지 번호 -->
-            <li class="page-item"
-              th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0, 
-                                               currentPage + 3 < paging.totalPages - 1 ? currentPage + 3 : paging.totalPages - 1)}"
+          <!-- 페이지 번호 -->
+          <li class="page-item"
+              th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0,
+                                     currentPage + 3 < paging.totalPages - 1 ? currentPage + 3 : paging.totalPages - 1)}"
               th:classappend="${pageNum == currentPage} ? 'active' : ''">
-              <a class="page-link" th:href="@{/partner/product/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
-            </li>
-            <!-- /페이지 번호 -->
+              <a class="page-link" th:href="@{/partner/checkout/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
+          </li>
+          <!-- /페이지 번호 -->
 
-            <!-- 다음 버튼 -->
-            <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
-              <a class="page-link" th:href="@{/partner/product/list(page=${currentPage + 1})}" aria-label="Next">
-                <span aria-hidden="true">></span>
-                <span aria-hidden="true">&raquo;</span>
+          <!-- 다음 버튼 -->
+          <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
+              <a class="page-link" th:href="@{/partner/checkout/list(page=${currentPage + 1})}" aria-label="Next">
+                  <span aria-hidden="true"> &gt; </span>
               </a>
-            </li>
-            <!-- /마지막 버튼 -->
-          </ul>
-        </nav>
-        <!-- /페이지네이션 -->
+          </li>
+          <!-- /다음 버튼 -->
+
+          <!-- 마지막 페이지 버튼 -->
+          <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
+              <a class="page-link" th:href="@{/partner/checkout/list(page=${totalPages - 1})}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+              </a>
+          </li>
+          <!-- /마지막 페이지 버튼 -->
+      </ul>
+  </nav>
+  <!-- /페이지네이션 -->
+
 
 
       </main>
@@ -146,37 +146,30 @@
   <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
 
   <script>
-    // // 각 가격에 대해 값을 가져오는 함수
-    // const sellingPriceElements = document.querySelectorAll(".sellingPrice");
-    // const discountRateElements = document.querySelectorAll(".discountRate");
-    // const discountPriceElements = document.querySelectorAll(".discountPrice");
-    // const marginElements = document.querySelectorAll(".margin");
-    // const marginRateElements = document.querySelectorAll(".marginRate");
+     //각 가격에 대해 값을 가져오는 함수
+     const grandTotalPaymentElements = document.querySelectorAll(".grandTotalPayment");
+     const shippingFeeElements = document.querySelectorAll(".shippingFee");
+     const marginElements = document.querySelectorAll(".margin");
+     const marginRateElements = document.querySelectorAll(".marginRate");
 
-    // // 값을 포맷팅하는 함수
-    // function formatPrice(price) {
-    //   return price.toLocaleString();  // 1000단위로 콤마 추가
-    // }
+    //값을 포맷팅하는 함수
+    function formatPrice(price) {
+      return price.toLocaleString();  // 1000단위로 콤마 추가
+    }
 
-    // // 각 상품에 대해 반복 처리
-    // sellingPriceElements.forEach((sellingPriceElement, index) => {
-    //   const sellingPrice = parseFloat(sellingPriceElement.textContent.trim());
-    //   let discountRate = parseFloat(discountRateElements[index].textContent.trim());
-    //   const discountPrice = parseFloat(discountPriceElements[index].textContent.trim());
-    //   const margin = parseFloat(marginElements[index].textContent.trim());
-    //   let marginRate = parseFloat(marginRateElements[index].textContent.trim());
+    //각 상품에 대해 반복 처리
+    grandTotalPaymentElements.forEach((grandTotalPaymentElement, index) => {
+      const grandTotalPayment = parseFloat(grandTotalPaymentElement.textContent);
+      const shippingFee = parseFloat(shippingFeeElements[index].textContent);
+      const margin = parseFloat(marginElements[index].textContent);
+      const marginRate = parseFloat(marginRateElements[index].textContent);
 
-    //   //할인율을 내림하여 정수로 나타냄
-    //   discountRate = Math.floor(discountRate);
-    //   marginRate = Math.floor(marginRate);
-
-    //   // 포맷팅된 값으로 업데이트
-    //   sellingPriceElement.textContent = formatPrice(sellingPrice);
-    //   discountRateElements[index].textContent = discountRate + '%';  // 할인율은 퍼센트 표시
-    //   discountPriceElements[index].textContent = formatPrice(discountPrice);
-    //   marginElements[index].textContent = formatPrice(margin);
-    //   marginRateElements[index].textContent = marginRate+'%'
-    // });
+      // 포맷팅된 값으로 업데이트
+      grandTotalPaymentElement.textContent = formatPrice(grandTotalPayment);
+      shippingFeeElements[index].textContent = formatPrice(shippingFee);
+      marginElements[index].textContent = formatPrice(margin);
+      marginRateElements[index].textContent = formatPrice(marginRate) + '%'
+    });
 
   </script>
   <!-- /JS -->

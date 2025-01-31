@@ -11,12 +11,17 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CheckoutListDto {
+public class PartnerCheckoutListViewDto {
 
     /**
-     * 주문자 id
+     * 대표이미지
      */
-    private String customerId;
+    private String presentProductImage;
+
+    /**
+     * 상품명
+     */
+    private String productName;
 
     /**
      * 주문상세 PK
@@ -34,21 +39,6 @@ public class CheckoutListDto {
     private String createdAt;
 
     /**
-     * 상품명
-     */
-    private String productName;
-
-    /**
-     * 최종 결제 가격
-     */
-    private BigDecimal grandTotalPayment;
-
-    /**
-     * 대표이미지
-     */
-    private String presentProductImage;
-
-    /**
      *  주문 수량
      */
     private Long count;
@@ -57,6 +47,11 @@ public class CheckoutListDto {
      * 배송비
      */
     private BigDecimal shippingFee;
+
+    /**
+     * 판매금액
+     */
+    private BigDecimal totalDiscountedPrice;
 
     /**
      * 마진
@@ -72,11 +67,6 @@ public class CheckoutListDto {
      * 주문확인여부
      */
     private String checkoutProductState;
-
-    /**
-     * 주문번호
-     */
-    private String checkoutCode;
 
 
 }

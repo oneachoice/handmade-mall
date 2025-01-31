@@ -2,7 +2,6 @@ package newbies.handmade_mall.controller;
 
 import lombok.RequiredArgsConstructor;
 import newbies.handmade_mall.dto.res.ProductListItemDto;
-import newbies.handmade_mall.service.CustomerCrudService;
 import newbies.handmade_mall.service.ProductCrudService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeViewController {
 
     private final ProductCrudService productCrudService;
+
+
+
 
     /**
      * 홈 화면 생성

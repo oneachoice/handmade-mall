@@ -33,7 +33,7 @@
           파트너 네비게이션
         </nav>
       </div>
-      <!-- /네이게이션 컨테이너 -->
+      <!-- /네비게이션 컨테이너 -->
 
       <!-- 메인 컨테이너 -->
       <main class="col-9 col-sm-10">
@@ -76,7 +76,7 @@
             </thead>
             <tbody>
               <tr th:each="productlist : ${paging.content}" style="vertical-align: middle;">
-                <th scope="row" th:text="${productlist.productCode}" ></th>
+                <th scope="row" th:text="${productlist.productCode}"></th>
                 <td>
                   <a th:href="@{/customer/product/details/{productId} (productId=${productlist.productId})}">
                     <img th:src="${productlist.mainImagePath}" width="100px" height="100px" alt="Product Image" />
@@ -122,9 +122,9 @@
 
             <!-- 페이지 번호 -->
             <li class="page-item"
-                th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0,
+              th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0,
                                        currentPage + 3 < paging.totalPages - 1 ? currentPage + 3 : paging.totalPages - 1)}"
-                th:classappend="${pageNum == currentPage} ? 'active' : ''">
+              th:classappend="${pageNum == currentPage} ? 'active' : ''">
               <a class="page-link" th:href="@{/partner/product/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
             </li>
             <!-- /페이지 번호 -->
@@ -160,7 +160,7 @@
   <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
 
   <script>
-    // 각 가격에 대해 값을 가져오는 함수
+    //각 가격에 대해 값을 가져오는 함수
     const sellingPriceElements = document.querySelectorAll(".sellingPrice");
     const discountRateElements = document.querySelectorAll(".discountRate");
     const discountPriceElements = document.querySelectorAll(".discountPrice");
@@ -174,22 +174,18 @@
 
     // 각 상품에 대해 반복 처리
     sellingPriceElements.forEach((sellingPriceElement, index) => {
-      const sellingPrice = parseFloat(sellingPriceElement.textContent.trim());
-      let discountRate = parseFloat(discountRateElements[index].textContent.trim());
-      const discountPrice = parseFloat(discountPriceElements[index].textContent.trim());
-      const margin = parseFloat(marginElements[index].textContent.trim());
-      let marginRate = parseFloat(marginRateElements[index].textContent.trim());
-
-      //할인율을 내림하여 정수로 나타냄
-      discountRate = Math.floor(discountRate);
-      marginRate = Math.floor(marginRate);
+      const sellingPrice = parseFloat(sellingPriceElement.textContent);
+      let discountRate = parseFloat(discountRateElements[index].textContent);
+      const discountPrice = parseFloat(discountPriceElements[index].textContent);
+      const margin = parseFloat(marginElements[index].textContent);
+      let marginRate = parseFloat(marginRateElements[index].textContent);
 
       // 포맷팅된 값으로 업데이트
       sellingPriceElement.textContent = formatPrice(sellingPrice);
       discountRateElements[index].textContent = discountRate + '%';  // 할인율은 퍼센트 표시
       discountPriceElements[index].textContent = formatPrice(discountPrice);
       marginElements[index].textContent = formatPrice(margin);
-      marginRateElements[index].textContent = marginRate+'%'
+      marginRateElements[index].textContent = marginRate + '%'
     });
 
   </script>

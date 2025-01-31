@@ -1,6 +1,7 @@
 package newbies.handmade_mall.service;
 
 import lombok.RequiredArgsConstructor;
+import newbies.handmade_mall.common.ProductCategory;
 import newbies.handmade_mall.dto.req.ProductDto;
 import newbies.handmade_mall.dto.res.CheckoutProductViewDto;
 import newbies.handmade_mall.dto.res.ProductListItemDto;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -43,7 +45,7 @@ public class ProductCrudService {
         Product product = getProduct(productId);
 
         return CheckoutProductViewDto.builder()
-                                     .createdAt(Formatter.formatForViewCheckout())
+                                     .createdAt(Formatter.formatForViewCheckout(LocalDateTime.now()))
                                      .productName(product.getProductName())
                                      .build();
 
@@ -72,6 +74,17 @@ public class ProductCrudService {
         // 각각의 Product를 ProductListViewDto로 변환
         return productPage.map(productMapper::toProductListItemDto);
     }
+
+    /**
+     * 카테고리별 페이지
+     */
+    public Page<ProductListItemDto> getCategoryProductPage(ProductCategory productCategory, Pageable pageable) {
+
+        Page<Product> productPage = productRepository.findAllByCategory(productCategory,pageable);
+
+        return productPage.map(productMapper::toProductListItemDto);
+    }
+
 
     /**
      * DB에 등록되어 있는 상품별 정보(이미지 외)를 수정 화면에 나타내기 위한 메서드

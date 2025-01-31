@@ -1,6 +1,7 @@
 package newbies.handmade_mall.controller;
 
 import lombok.RequiredArgsConstructor;
+import newbies.handmade_mall.common.ProductCategory;
 import newbies.handmade_mall.dto.req.ProductDto;
 import newbies.handmade_mall.dto.res.ProductImageUrlDto;
 import newbies.handmade_mall.dto.res.ProductListItemDto;
@@ -24,6 +25,36 @@ public class CustomerProductViewController {
     private final ProductCrudService productCrudService;
 
     private final ProductImageCrudService productImageCrudService;
+
+    /**
+     * 일반 상품 페이지
+     */
+    @GetMapping("/product/list/general")
+    public String viewGeneralProductPage(Model model, @PageableDefault(size = 20, page = 0, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<ProductListItemDto> productListViewDtoPage = productCrudService.getCategoryProductPage(ProductCategory.GENERAL, pageable);
+
+        model.addAttribute("productList", productListViewDtoPage.getContent());
+        model.addAttribute("paging", productListViewDtoPage);
+        model.addAttribute("currentPage", productListViewDtoPage.getNumber());
+
+        return "pages/product/list";
+    }
+
+    /**
+     * 선물용 상품 페이지
+     */
+    @GetMapping("/product/list/gift")
+    public String viewGiftProductPage(Model model, @PageableDefault(size = 20, page = 0, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<ProductListItemDto> productListViewDtoPage = productCrudService.getCategoryProductPage(ProductCategory.GIFT, pageable);
+
+        model.addAttribute("productList", productListViewDtoPage.getContent());
+        model.addAttribute("paging", productListViewDtoPage);
+        model.addAttribute("currentPage", productListViewDtoPage.getNumber());
+
+        return "pages/product/list";
+    }
 
     /**
      * @return 고객에게 보여지는 페이지
