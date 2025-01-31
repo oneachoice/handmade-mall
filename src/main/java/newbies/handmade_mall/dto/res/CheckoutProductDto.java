@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import newbies.handmade_mall.entity.Checkout;
-import newbies.handmade_mall.entity.Product;
+import newbies.handmade_mall.checkout.Checkout;
+import newbies.handmade_mall.product.Product;
 
 @Data
 @Builder

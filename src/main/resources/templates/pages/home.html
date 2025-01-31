@@ -83,7 +83,7 @@
                 <div class="container mt-5">
                     <div th:each="product : ${product}" class="card me-4 mb-5 d-inline-block" style="width: 18rem;">
                         <!-- 상품 이미지 -->
-                        <a th:href="@{/customer/product/details/{productId} (productId=${product.productId})}"
+                        <a th:href="@{/product/details/{productId} (productId=${product.productId})}"
                         class="text-black text-decoration-none">
                         <img th:src="${product.mainImagePath}" class="card-img-top" style="height : 18rem;">
                         </a>

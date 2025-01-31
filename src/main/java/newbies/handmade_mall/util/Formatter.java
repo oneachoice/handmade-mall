@@ -1,6 +1,6 @@
 package newbies.handmade_mall.util;
 
-import newbies.handmade_mall.common.CheckoutProductState;
+import newbies.handmade_mall.checkout.CheckoutProductState;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

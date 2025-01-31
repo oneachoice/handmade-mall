@@ -2,8 +2,8 @@ package newbies.handmade_mall.data_loader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import newbies.handmade_mall.entity.Partner;
-import newbies.handmade_mall.repository.PartnerRepository;
+import newbies.handmade_mall.partner.Partner;
+import newbies.handmade_mall.partner.PartnerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

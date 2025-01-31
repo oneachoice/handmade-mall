@@ -1,11 +1,9 @@
 package newbies.handmade_mall.dto.res;
 
 import lombok.*;
-import newbies.handmade_mall.entity.BaseTime;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Getter
 @Builder

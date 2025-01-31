@@ -44,7 +44,7 @@
             <div class="row justify-content-start">
                 <div class="col-3" th:each="productlist : ${paging.content}">
                     <div class="card mb-3" style="width: 18rem">
-                        <a th:href="@{/customer/product/details/{productId} (productId=${productlist.productId})}"
+                        <a th:href="@{/product/details/{productId} (productId=${productlist.productId})}"
                            class="text-black text-decoration-none">
                             <img th:src="${productlist.mainImagePath}" class="card-img-top" alt="상품 대표 이미지"
                                  style="height:18rem;"/>
@@ -76,7 +76,7 @@
 
         <!-- 1번 페이지 버튼 -->
         <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
-            <a class="page-link" th:href="@{/customer/product/list(page=0)}" aria-label="Previous">
+            <a class="page-link" th:href="@{/product/list(page=0)}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
@@ -84,7 +84,7 @@
 
         <!-- 이전 버튼 -->
         <li class="page-item" th:classappend="${paging.hasPrevious()} ? '' : 'disabled'">
-            <a class="page-link" th:href="@{/customer/product/list(page=${currentPage - 1})}" aria-label="Previous">
+            <a class="page-link" th:href="@{/product/list(page=${currentPage - 1})}" aria-label="Previous">
                 <span aria-hidden="true"> &lt; </span>
             </a>
         </li>
@@ -95,13 +95,13 @@
             th:each="pageNum : ${#numbers.sequence(currentPage - 3 > 0 ? currentPage - 3 : 0,
                                                currentPage + 3 < paging.totalPages - 1 ? currentPage + 3 : paging.totalPages - 1)}"
             th:classappend="${pageNum == currentPage} ? 'active' : ''">
-            <a class="page-link" th:href="@{/customer/product/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
+            <a class="page-link" th:href="@{/product/list(page=${pageNum})}" th:text="${pageNum + 1}"></a>
         </li>
         <!-- /페이지 번호 -->
 
         <!-- 다음 버튼 -->
         <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
-            <a class="page-link" th:href="@{/customer/product/list(page=${currentPage + 1})}" aria-label="Next">
+            <a class="page-link" th:href="@{/product/list(page=${currentPage + 1})}" aria-label="Next">
                 <span aria-hidden="true">></span>
             </a>
         </li>
@@ -109,7 +109,7 @@
 
         <!-- 마지막 페이지 버튼 -->
         <li class="page-item" th:classappend="${paging.hasNext()} ? '' : 'disabled'">
-            <a class="page-link" th:href="@{/customer/product/list(page=${paging.totalPages - 1 })}"
+            <a class="page-link" th:href="@{/product/list(page=${paging.totalPages - 1 })}"
                aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>

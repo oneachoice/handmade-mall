@@ -60,7 +60,7 @@
           <div class="row justify-content-start">
               <div class="col-3" th:each="product : ${products}">
                   <div class="card mb-3" style="width: 18rem">
-                      <a th:href="@{/customer/product/details/{id} (id=${product.productId})}"
+                      <a th:href="{/product/details/{id} (id=${product.productId})}"
                          class="text-black text-decoration-none">
                           <img th:src="${product.mainImagePath}" class="card-img-top" alt="상품 대표 이미지"
                                style="height:18rem;"/>
