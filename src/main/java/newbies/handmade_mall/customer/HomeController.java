@@ -23,7 +23,7 @@ public class HomeController {
 
 
     /**
-     * 홈 화면 생성
+     * 홈 화면 생성.
      */
     @GetMapping("/")
     public String ViewHomePage(Model model) {
